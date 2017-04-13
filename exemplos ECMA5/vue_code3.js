@@ -22,7 +22,7 @@ var loadTemplates = function(id) {
 // Adiciona o zero quando necessário
 var addZero = function(data) {
   return (data < 10) ? '0' + data : data;
-}
+};
 
 // Relógio
 var getAtime = function() {

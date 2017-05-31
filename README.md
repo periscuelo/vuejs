@@ -20,3 +20,9 @@ Component do Vue será excelente. O Importante é saber que você tem opções e
 com o Vue.
 
 Vale a pena experimentar o Vue2 =)
+
+Demos com CDN usando ECMA5:
+
+[Hello World](https://periscuelo.github.io/vuejs)
+[Relógio](https://periscuelo.github.io/vuejs/relogio/)
+[Cronômetro](https://periscuelo.github.io/vuejs/cronometro/)

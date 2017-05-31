@@ -154,6 +154,7 @@ Vue.component('contador', {
         this.second = (this.second === 0) ? 60 : this.second;
         this.second -= 1;
       }
+      if (this.hour === 0 && this.minute === 0 && this.second === 0) this.reset();
     }
   },
   watch: {

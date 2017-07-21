@@ -1,16 +1,16 @@
 /*jshint esversion: 6 */
 // tsc tsc
-function ready(fn) {
+ready = fn => {
   let interval = setInterval(() => {
     if (document.readyState === 'complete') {
       clearInterval(interval);
       fn();
     }
   }, 1);
-}
+};
 
 // Carrega o Template
-function loadTemplates(id) {
+loadTemplates = id => {
   let selector = document.querySelector(id);
   let scripts = selector.contentDocument.scripts;
   let ct = scripts.length;
@@ -18,22 +18,22 @@ function loadTemplates(id) {
     document.body.appendChild(scripts[0]);
   }
   selector.parentNode.removeChild(selector);
-}
+};
 
 // Adiciona o zero quando necessário
-function addZero(data) {
+addZero = data => {
   return (data < 10) ? '0' + data : data;
-}
+};
 
 // Relógio
-function getAtime() {
+getAtime = () => {
   let date = new Date();
   let hour = addZero(date.getHours());
   let minute = addZero(date.getMinutes());
   let second = addZero(date.getSeconds());
   let str_hour = hour + ':' + minute + ':' + second;
   return str_hour;
-}
+};
 
 Vue.component('relogio', {
   template: '#tmpl_relogio',

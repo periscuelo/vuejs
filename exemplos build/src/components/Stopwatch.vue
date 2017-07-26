@@ -137,7 +137,7 @@
         this.started = false
       },
       mark () {
-        this.$store.commit('mark', { m: this.minute, s: this.second, ms: this.milisecond })
+        this.$store.dispatch('mark', { m: this.minute, s: this.second, ms: this.milisecond })
       },
       chronometer () {
         this.milisecond += 1

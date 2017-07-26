@@ -12,12 +12,12 @@
     name: 'notes',
     computed: {
       marcados () {
-        return this.$store.state.values
+        return this.$store.getters.values
       }
     },
     methods: {
       clean () {
-        this.$store.commit('reset')
+        this.$store.dispatch('reset')
       }
     }
   }

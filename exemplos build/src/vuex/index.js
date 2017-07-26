@@ -11,17 +11,30 @@ export default new Vuex.Store({
   state: {
     values: []
   },
+  getters: {
+    values: state => {
+      return state.values
+    }
+  },
   mutations: {
-    mark (state, obj) {
+    MARK (state, obj) {
       let minute = addZero(obj.m)
       let second = addZero(obj.s)
       let milisecond = addZero(obj.ms)
       state.values.push(minute + ':' + second + '.' + milisecond)
       return state.values
     },
-    reset (state) {
+    RESET (state) {
       state.values = []
       return state.values
+    }
+  },
+  actions: {
+    mark ({commit}, obj) {
+      commit('MARK', obj)
+    },
+    reset ({commit}) {
+      commit('RESET')
     }
   }
 })

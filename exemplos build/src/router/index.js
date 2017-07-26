@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import VueHead from 'vue-head'
 import Hello from '@/components/Hello'
 import Clock from '@/components/Clock'
 import Stopwatch from '@/components/Stopwatch'
@@ -12,6 +13,7 @@ const Stopwatch = () => import('@/components/Stopwatch')
 const All = () => import('@/components/All') */
 
 Vue.use(Router)
+Vue.use(VueHead)
 
 export default new Router({
   mode: 'history',

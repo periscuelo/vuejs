@@ -60,8 +60,19 @@
         milisecond: 0,
         started: false,
         interval: '',
-        counter: ''
+        counter: '',
+        title: 'Cronômetro'
       }
+    },
+    head: {
+      title () {
+        return {
+          inner: this.title
+        }
+      },
+      meta: [
+        { name: 'description', content: 'Meu exemplo de cronômetro', id: 'desc' }
+      ]
     },
     computed: {
       aCounter () {

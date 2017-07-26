@@ -18,8 +18,19 @@
     name: 'relogio',
     data () {
       return {
-        time: '00:00:00'
+        time: '00:00:00',
+        title: 'relógio'
       }
+    },
+    head: {
+      title () {
+        return {
+          inner: this.title
+        }
+      },
+      meta: [
+        { name: 'description', content: 'Meu exemplo de relógio', id: 'desc' }
+      ]
     },
     computed: {
       aTime () {

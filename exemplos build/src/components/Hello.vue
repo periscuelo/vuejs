@@ -10,8 +10,19 @@
     name: 'hello',
     data () {
       return {
-        msg: 'Olá VueJs 2. Sou um componente buildado :)'
+        msg: 'Olá VueJs 2. Sou um componente buildado :)',
+        title: 'Hello World'
       }
+    },
+    head: {
+      title () {
+        return {
+          inner: this.title
+        }
+      },
+      meta: [
+        { name: 'description', content: 'Meu exemplo de hello world', id: 'desc' }
+      ]
     }
   }
 </script>

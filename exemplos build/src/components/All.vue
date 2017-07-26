@@ -17,6 +17,21 @@
       Hello,
       Clock,
       Stopwatch
+    },
+    data () {
+      return {
+        title: 'Tudo Junto'
+      }
+    },
+    head: {
+      title () {
+        return {
+          inner: this.title
+        }
+      },
+      meta: [
+        { name: 'description', content: 'Meu exemplo de tudo junto', id: 'desc' }
+      ]
     }
   }
 </script>

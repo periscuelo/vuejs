@@ -5,6 +5,12 @@ import Clock from '@/components/Clock'
 import Stopwatch from '@/components/Stopwatch'
 import All from '@/components/All'
 
+// Lazy Load (Add comment to the imports components above and remove comment below)
+/* const Hello = () => import('@/components/Hello')
+const Clock = () => import('@/components/Clock')
+const Stopwatch = () => import('@/components/Stopwatch')
+const All = () => import('@/components/All') */
+
 Vue.use(Router)
 
 export default new Router({

@@ -9,6 +9,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
+  base: '/', // Change hear if you need run the app in subfolders
   routes: [
     {
       path: '/',

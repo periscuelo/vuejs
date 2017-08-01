@@ -22,11 +22,9 @@ export default new Vuex.Store({
       let second = addZero(obj.s)
       let milisecond = addZero(obj.ms)
       state.values.push(minute + ':' + second + '.' + milisecond)
-      return state.values
     },
     RESET (state) {
       state.values = []
-      return state.values
     }
   },
   actions: {

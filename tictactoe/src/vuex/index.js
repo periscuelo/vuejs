@@ -70,7 +70,7 @@ export default new Vuex.Store({
         state.game = 'over'
         state.msg = 'Jogador ' + obj.player + ' venceu!'
       }
-      if (verificaPreenchimento(state.squares)) {
+      if (verificaPreenchimento(state.squares) && state.msg === '') {
         state.game = 'over'
         state.msg = 'Deu velha :('
       }
@@ -79,6 +79,7 @@ export default new Vuex.Store({
       state.timePlayer = 1
       state.game = 'start'
       state.squares = []
+      state.msg = ''
     }
   },
   actions: {

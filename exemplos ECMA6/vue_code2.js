@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 // tsc tsc
 ready = fn => {
-  let interval = setInterval(() => {
+  const interval = setInterval(() => {
     if (document.readyState === 'complete') {
       clearInterval(interval);
       fn();
@@ -11,9 +11,9 @@ ready = fn => {
 
 // Carrega o Template
 loadTemplates = id => {
-  let selector = document.querySelector(id);
-  let scripts = selector.contentDocument.scripts;
-  let ct = scripts.length;
+  const selector = document.querySelector(id);
+  const scripts = selector.contentDocument.scripts;
+  const ct = scripts.length;
   for (let i=0; i<ct; i++) {
     document.body.appendChild(scripts[0]);
   }
@@ -26,12 +26,12 @@ addZero = data => {
 };
 
 // Relógio
-getAtime = () => {
-  let date = new Date();
-  let hour = addZero(date.getHours());
-  let minute = addZero(date.getMinutes());
-  let second = addZero(date.getSeconds());
-  let str_hour = hour + ':' + minute + ':' + second;
+const getAtime = () => {
+  const date = new Date();
+  const hour = addZero(date.getHours());
+  const minute = addZero(date.getMinutes());
+  const second = addZero(date.getSeconds());
+  const str_hour = hour + ':' + minute + ':' + second;
   return str_hour;
 };
 
@@ -74,10 +74,10 @@ Vue.component('contador', {
   },
   computed: {
     aCounter() {
-      let hour = addZero(this.hour);
-      let minute = addZero(this.minute);
-      let second = addZero(this.second);
-      let milisecond = addZero(this.milisecond);
+      const hour = addZero(this.hour);
+      const minute = addZero(this.minute);
+      const second = addZero(this.second);
+      const milisecond = addZero(this.milisecond);
       switch (this.tipo) {
         case '1':
           this.counter = minute + ':' + second + '.<span class="h3">' + milisecond + '</span>';

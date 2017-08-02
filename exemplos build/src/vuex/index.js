@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-let addZero = data => {
+const addZero = data => {
   return (data < 10) ? '0' + data : data
 }
 
@@ -18,9 +18,9 @@ export default new Vuex.Store({
   },
   mutations: {
     MARK (state, obj) {
-      let minute = addZero(obj.m)
-      let second = addZero(obj.s)
-      let milisecond = addZero(obj.ms)
+      const minute = addZero(obj.m)
+      const second = addZero(obj.s)
+      const milisecond = addZero(obj.ms)
       state.values.push(minute + ':' + second + '.' + milisecond)
     },
     RESET (state) {

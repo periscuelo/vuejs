@@ -39,7 +39,7 @@
 <script>
   import Notes from '@/components/Notes'
 
-  let addZero = data => {
+  const addZero = data => {
     return (data < 10) ? '0' + data : data
   }
 
@@ -76,10 +76,10 @@
     },
     computed: {
       aCounter () {
-        let hour = addZero(this.hour)
-        let minute = addZero(this.minute)
-        let second = addZero(this.second)
-        let milisecond = addZero(this.milisecond)
+        const hour = addZero(this.hour)
+        const minute = addZero(this.minute)
+        const second = addZero(this.second)
+        const milisecond = addZero(this.milisecond)
         switch (this.tipo) {
           case '1':
             this.counter = minute + ':' + second + '.<span class="h3">' + milisecond + '</span>'

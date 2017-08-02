@@ -1,11 +1,11 @@
 /*jshint esversion: 6 */
 // Relógio
-getAtime = () => {
-  let date = new Date();
-  let hour = (date.getHours() < 10) ? '0' + date.getHours() : date.getHours();
-  let minute = (date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes();
-  let second = (date.getSeconds() < 10) ? '0' + date.getSeconds() : date.getSeconds();
-  let str_hour = hour + ':' + minute + ':' + second;
+const getAtime = () => {
+  const date = new Date();
+  const hour = (date.getHours() < 10) ? '0' + date.getHours() : date.getHours();
+  const minute = (date.getMinutes() < 10) ? '0' + date.getMinutes() : date.getMinutes();
+  const second = (date.getSeconds() < 10) ? '0' + date.getSeconds() : date.getSeconds();
+  const str_hour = hour + ':' + minute + ':' + second;
   return str_hour;
 };
 

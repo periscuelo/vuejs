@@ -3,20 +3,20 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-let verificaHorizontal = (arr, index, value) => {
+const verificaHorizontal = (arr, index, value) => {
   return (arr[index][0] === value && arr[index][1] === value && arr[index][2] === value)
 }
 
-let verificaVertical = (arr, index, value) => {
+const verificaVertical = (arr, index, value) => {
   return (arr[0][index] === value && arr[1][index] === value && arr[2][index] === value)
 }
 
-let verificaDiagonal = (arr, value) => {
+const verificaDiagonal = (arr, value) => {
   if (arr[1][1] === value && ((arr[0][0] === value && arr[2][2] === value) || (arr[0][2] === value && arr[2][0] === value))) return true
   return false
 }
 
-let verificaPreenchimento = arr => {
+const verificaPreenchimento = arr => {
   let preenchido = 0
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {

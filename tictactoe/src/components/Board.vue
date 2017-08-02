@@ -19,22 +19,16 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'board',
-    computed: {
-      squares () {
-        return this.$store.getters.squares
-      },
-      player () {
-        return this.$store.getters.player
-      },
-      status () {
-        return this.$store.getters.status
-      },
-      msg () {
-        return this.$store.getters.msg
-      }
-    },
+    computed: mapGetters([
+      'squares',
+      'player',
+      'status',
+      'msg'
+    ]),
     methods: {
       register (line, square, value) {
         if (value === 0 && this.status !== 'over') {

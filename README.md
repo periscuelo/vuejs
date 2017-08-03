@@ -26,3 +26,4 @@ Demos com CDN usando ECMA5:
 + [Hello World](https://periscuelo.github.io/vuejs)
 + [Relógio](https://periscuelo.github.io/vuejs/relogio/)
 + [Cronômetro](https://periscuelo.github.io/vuejs/cronometro/)
++ [Jogo da Velha](https://periscuelo.github.io/vuejs/tictactoe/)

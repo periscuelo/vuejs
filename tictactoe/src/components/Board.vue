@@ -57,8 +57,16 @@
       border-bottom: $border;
     }
     .row {
-      div:nth-child(-n+2) {
-        border-right: $border;
+      div {
+        padding-left: 0;
+        padding-right: 0;
+        &:nth-child(-n+2) {
+          border-right: $border;
+        }
+      }
+      span {
+        display: block;
+        cursor: pointer;
       }
     }
   }

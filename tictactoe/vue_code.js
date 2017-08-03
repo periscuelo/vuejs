@@ -22,7 +22,7 @@ var verificaPreenchimento = function(arr) {
 }
 
 Vue.component('tictactoe', {
-  template: `<div>
+  template: `<div class="text-center">
               <h1>Jogo da Velha</h1>
               <div class="container">
                 <div class="row" v-for="(lines, line) in cSquares">

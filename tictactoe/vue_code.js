@@ -25,7 +25,7 @@ Vue.component('tictactoe', {
   template: `<div class="text-center">
               <h1>Jogo da Velha</h1>
               <div class="container">
-                <div class="row" v-for="(lines, line) in cSquares">
+                <div class="row" v-for="(lines, line) in squares">
                   <div class="col-xs-4" v-for="(value, square) in lines" @click="register(line, square, value)">
                     <span v-if="value === 1">X</span>
                     <span v-else-if="value === 2">O</span>
@@ -33,8 +33,8 @@ Vue.component('tictactoe', {
                   </div>
                 </div>
                 <div class="row text-uppercase smFont" v-if="status === 'over'">
-                  game {{status}} <br> {{cMsg}} <br>
-                  <button type="button" class="button btn-primary" @click="reset()">Revanche?</button>
+                  game {{status}} <br> {{msg}} <br>
+                  <button type="button" class="btn btn-primary" @click="reset()">Revanche?</button>
                 </div>
                 <div class="row" v-if="status !== 'over'">Jogador {{player}}</div>
               </div>
@@ -43,8 +43,8 @@ Vue.component('tictactoe', {
     return {
       timePlayer: 1,
       game: 'start',
-      squares: [],
-      msg: ''
+      retSquares: [],
+      retMsg: ''
     };
   },
   computed: {
@@ -54,39 +54,39 @@ Vue.component('tictactoe', {
     status: function() {
       return this.game;
     },
-    cSquares: function() {
-      if (this.squares.length === 0) {
+    squares: function() {
+      if (this.retSquares.length === 0) {
         for (var i = 3; i > 0; i--) {
-          this.squares.push([0, 0, 0]);
+          this.retSquares.push([0, 0, 0]);
         }
       }
-      return this.squares;
+      return this.retSquares;
     },
-    cMsg: function() {
-      return this.msg
+    msg: function() {
+      return this.retMsg;
     }
   },
   methods: {
     changePlayer: function() {
-      return this.timePlayer = (this.timePlayer === 1) ? 2 : 1
+      return this.timePlayer = (this.timePlayer === 1) ? 2 : 1;
     },
     play: function (obj) {
-      if (this.squares[obj.line][obj.square] === 0) this.squares[obj.line][obj.square] = obj.player
+      if (this.retSquares[obj.line][obj.square] === 0) this.retSquares[obj.line][obj.square] = obj.player;
     },
     gameStatus: function (obj) {
       for (var i = 0; i < 3; i++) {
-        if (verificaHorizontal(this.squares, i, obj.player) || verificaVertical(this.squares, i, obj.player)) {
-          this.game = 'over'
-          this.msg = 'Jogador ' + obj.player + ' venceu!'
+        if (verificaHorizontal(this.retSquares, i, obj.player) || verificaVertical(this.retSquares, i, obj.player)) {
+          this.game = 'over';
+          this.retMsg = 'Jogador ' + obj.player + ' venceu!';
         }
       }
-      if (verificaDiagonal(this.squares, obj.player)) {
-        this.game = 'over'
-        this.msg = 'Jogador ' + obj.player + ' venceu!'
+      if (verificaDiagonal(this.retSquares, obj.player)) {
+        this.game = 'over';
+        this.retMsg = 'Jogador ' + obj.player + ' venceu!';
       }
-      if (verificaPreenchimento(this.squares) && this.msg === '') {
-        this.game = 'over'
-        this.msg = 'Deu velha :('
+      if (verificaPreenchimento(this.retSquares) && this.retMsg === '') {
+        this.game = 'over';
+        this.retMsg = 'Deu velha :(';
       }
     },
     register: function (line, square, value) {
@@ -98,10 +98,10 @@ Vue.component('tictactoe', {
       }
     },
     reset: function () {
-      this.timePlayer = 1
-      this.game = 'start'
-      this.squares = []
-      this.msg = ''
+      this.timePlayer = 1;
+      this.game = 'start';
+      this.retSquares = [];
+      this.retMsg = '';
     }
   }
 });

@@ -33,10 +33,16 @@ Vue.component('tictactoe', {
                   </div>
                 </div>
                 <div class="row text-uppercase smFont" v-if="status === 'over'">
-                  game {{status}} <br> {{msg}} <br>
-                  <button type="button" class="btn btn-primary" @click="reset()">Revanche?</button>
+                  <span class="col-12">
+                    game {{status}} <br> {{msg}}
+                  </span>
+                  <span class="col-12">
+                    <button type="button" class="btn btn-primary" @click="reset()">Revanche?</button>
+                  </span>
                 </div>
-                <div class="row" v-if="status !== 'over'">Jogador {{player}}</div>
+                <div class="row" v-if="status !== 'over'">
+                  <span class="col-12">Jogador {{player}}</span>
+                </div>
               </div>
             </div>`,
   data: function() {

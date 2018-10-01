@@ -83,14 +83,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    changePlayer ({commit}) {
+    changePlayer ({ commit }) {
       commit('CHANGE_PLAYER')
     },
-    play ({commit}, obj) {
+    play ({ commit }, obj) {
       commit('PLAY', obj)
       commit('GAME_STATUS', obj)
     },
-    reset ({commit}) {
+    reset ({ commit }) {
       commit('RESET')
     }
   }

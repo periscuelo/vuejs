@@ -2,8 +2,13 @@
   <div class="board">
     <h1>Jogo da Velha</h1>
     <div class="container">
-      <div class="row" v-for="(lines, line) in squares">
-        <div class="col-4" v-for="(value, square) in lines" @click="register(line, square, value)">
+      <div class="row"
+        v-for="(lines, line, index) in squares"
+        :key="index">
+        <div class="col-4"
+          v-for="(value, square, index2) in lines"
+          :key="index2"
+          @click="register(line, square, value)">
           <span v-if="value === 1">X</span>
           <span v-else-if="value === 2">O</span>
           <span v-else>&nbsp;</span>

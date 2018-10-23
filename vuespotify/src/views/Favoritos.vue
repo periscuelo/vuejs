@@ -69,7 +69,7 @@ export default {
         case 'albums':
           ret = 2;
           break;
-        case 'tracks':
+        case 'musicas':
           ret = 3;
           break;
         default:

@@ -80,7 +80,7 @@ export default {
   methods: {
     checkUrl() {
       const splitted = this.myRoute.split('/');
-      const splitIndex = (splitted.length === 2) ? 1 : 3;
+      const splitIndex = (splitted.length <= 3) ? 1 : 3;
       switch (splitted[splitIndex]) {
         case 'albums':
           this.indexActive = 1;

@@ -53,6 +53,10 @@ export default new Router({
           component: () => import('./views/Musicas.vue'),
           props: { favoritos: true },
         },
+        {
+          path: 'vazio',
+          component: () => import('./components/FavoritosVazio.vue'),
+        },
       ],
     },
   ],

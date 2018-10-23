@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import isEqual from 'lodash/isEqual';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -80,8 +81,11 @@ export default {
     },
   },
   watch: {
-    musicFavs(newValues) {
+    musicFavs(newValues, oldValues) {
       this.setMyFavMusics(newValues);
+      if (oldValues.length > 0 && !isEqual(newValues, oldValues) && this.favoritos) {
+        this.$router.go(this.$router.currentRoute);
+      }
     },
   },
   mounted() {

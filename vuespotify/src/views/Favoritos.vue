@@ -20,23 +20,23 @@
             </div>
 
             <vs-sidebar-item
+              :to="`/favoritos/${rArtists}`"
               index="1"
-              icon="grade"
-              to="/favoritos/artistas">
+              icon="grade">
               Artistas
             </vs-sidebar-item>
 
             <vs-sidebar-item
+              :to="`/favoritos/${rAlbums}`"
               index="2"
-              icon="album"
-              to="/favoritos/albums">
+              icon="album">
               Albums
             </vs-sidebar-item>
 
             <vs-sidebar-item
+              :to="`/favoritos/${rTracks}`"
               index="3"
-              icon="music_note"
-              to="/favoritos/musicas">
+              icon="music_note">
               Musicas
             </vs-sidebar-item>
           </vs-sidebar>
@@ -58,6 +58,9 @@ export default {
     artistsFav: [],
     albumsFav: [],
     musicFavs: [],
+    rArtists: 'vazio',
+    rAlbums: 'vazio',
+    rTracks: 'vazio',
   }),
   computed: {
     sideBarIndex() {
@@ -83,6 +86,7 @@ export default {
     this.getArtistas(this.artistsFav);
     this.getAlbums(this.albumsFav);
     this.getMusicas(this.musicFavs);
+    this.setMyRoutes();
   },
   methods: {
     ...mapActions({
@@ -96,6 +100,33 @@ export default {
       this.artistsFav = obj.artists;
       this.albumsFav = obj.albums;
       this.musicFavs = obj.tracks;
+    },
+    setMyRoutes() {
+      const myRoute = this.$route.path;
+      const splitted = myRoute.split('/');
+      const splitIndex = (splitted.length === 3) ? 2 : 4;
+      if (this.artistsFav.length > 0) {
+        this.rArtists = 'artistas';
+        this.$router.push({ path: `/favoritos/${this.rArtists}` });
+      }
+      if (this.albumsFav.length > 0) this.rAlbums = 'albums';
+      if (this.musicFavs.length > 0) this.rTracks = 'musicas';
+
+      let ret = false;
+      switch (splitted[splitIndex]) {
+        case 'albums':
+          if (this.albumsFav.length < 1) ret = true;
+          break;
+        case 'musicas':
+          if (this.musicFavs.length < 1) ret = true;
+          break;
+        case 'vazio':
+          ret = false;
+          break;
+        default:
+          if (this.artistsFav.length < 1) ret = true;
+      }
+      if (ret) this.$router.push({ path: '/favoritos/vazio' });
     },
   },
 };

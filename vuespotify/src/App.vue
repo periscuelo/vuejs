@@ -34,7 +34,7 @@
       </vs-navbar-item>
       <vs-navbar-item :index="3">
         <router-link
-          to="/favoritos/artistas"
+          to="/favoritos/vazio"
           @click.native="debounce_check">
           Favoritos
         </router-link>

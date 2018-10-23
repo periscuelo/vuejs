@@ -22,7 +22,8 @@
         <template slot="avatar">
           <vs-avatar
             color="dark"
-            icon="music_video"/>
+            icon="music_video"
+            @click="test"/>
         </template>
         <vs-chip color="success">
           {{ msToMnSec(dado.duration_ms) }}
@@ -112,6 +113,10 @@ export default {
       obj.tracks = values;
       const newVal = JSON.stringify(obj);
       localStorage.setItem('vueSpotifyFavorites', newVal);
+    },
+    test() {
+      // eslint-disable-next-line
+      alert('Ops! Este é apenas um teste, não vai rolar ouvir musica por aqui! Desculpe :(');
     },
   },
 };

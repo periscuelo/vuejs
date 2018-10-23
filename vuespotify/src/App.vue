@@ -43,7 +43,7 @@ export default {
     search: '',
   }),
   mounted() {
-    const query = (location.hash === '') ? location.pathname : location.hash;
+    const query = (window.location.hash === '') ? window.location.pathname : window.location.hash;
     const sQuery = query.split('/');
     switch (sQuery[1]) {
       case 'albums':

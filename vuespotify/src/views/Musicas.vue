@@ -53,9 +53,7 @@ export default {
       });
       return { data, names: artNames.join(', ') };
     },
-    showAlbum: obj => {
-      return `${obj.names} | Álbum ${obj.data.album.name}`;
-    },
+    showAlbum: obj => `${obj.names} | Álbum ${obj.data.album.name}`,
   },
   props: {
     favoritos: {

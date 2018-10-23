@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 
+import forEach from 'lodash/forEach';
 import Albums from './modules/albums';
 import Artistas from './modules/artistas';
 import Musicas from './modules/musicas';
@@ -18,10 +19,11 @@ if (!sessionStorage.getItem('valid')) {
       axios.get('https://www.eleganciachick.com.br/spot.php').then(response => {
         sessionStorage.setItem('token', response.request.response);
         sessionStorage.setItem('valid', true);
+
+        /* eslint no-use-before-define: ["error", { "variables": false }] */
+        clearInterval(iId);
+        window.location.reload();
       });
-      /* eslint no-use-before-define: ["error", { "variables": false }] */
-      clearInterval(iId);
-      window.location.reload();
     }
   };
 
@@ -42,6 +44,7 @@ export default new Vuex.Store({
   state: {
     http,
     auth,
+    searched: {},
   },
   actions: {
     authAgain({ commit, dispatch }, obj) {
@@ -60,13 +63,46 @@ export default new Vuex.Store({
             } else {
               dispatch(obj.action);
             }
+            /* eslint no-use-before-define: ["error", { "variables": false }] */
+            clearInterval(iId);
           });
-          /* eslint no-use-before-define: ["error", { "variables": false }] */
-          clearInterval(iId);
         }
       };
 
       const iId = setInterval(checkClosed, 1000);
+    },
+    search({ getters, commit, dispatch }, obj) {
+      commit(CHANGE_STATE, { index: 'msg', value: 'Pesquisando.... Aguarde!' });
+      const datas = [];
+      const config = {
+        headers: getters.auth.headers,
+        params: { q: obj.q, type: obj.type },
+      };
+      getters.http.get('/search', config).then(response => {
+        console.log(response.data);
+        if (response.status === 204) {
+          commit(CHANGE_STATE, { index: 'msg', value: 'Não há dados para exibir!' });
+        } else {
+          let searchs = [];
+          forEach(response.data[`${obj.type}s`].items, (value, index) => {
+            if (index > 0 && index % 6 === 0) {
+              datas.push(searchs);
+              searchs = [];
+            }
+            searchs.push(value);
+          });
+          if (searchs.length > 0) datas.push(searchs);
+          const myValues = (obj.type !== 'track') ? datas : response.data[`${obj.type}s`].items;
+          commit(CHANGE_STATE, { index: 'searched', value: myValues });
+          commit(CHANGE_STATE, { index: 'msg', value: '' });
+        }
+      }, error => {
+        if (error.response.status === 401) {
+          sessionStorage.setItem('valid', false);
+          dispatch('authAgain', { action: 'search', obj });
+        }
+        console.log(error);
+      });
     },
   },
   mutations: {
@@ -75,8 +111,9 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    http: state => state.http,
     auth: state => state.auth,
+    http: state => state.http,
+    searched: state => state.searched,
   },
   modules: {
     Albums,

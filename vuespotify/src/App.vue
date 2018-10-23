@@ -12,13 +12,25 @@
       </vs-navbar-title>
 
       <vs-navbar-item :index="0" >
-        <router-link to="/">Artistas</router-link>
+        <router-link
+          to="/"
+          @click.native="debounce_check">
+          Artistas
+        </router-link>
       </vs-navbar-item>
       <vs-navbar-item :index="1">
-        <router-link to="/albums">Álbums</router-link>
+        <router-link
+          to="/albums"
+          @click.native="debounce_check">
+          Álbums
+        </router-link>
       </vs-navbar-item>
       <vs-navbar-item :index="2">
-        <router-link to="/musicas">Músicas</router-link>
+        <router-link
+          to="/musicas"
+          @click.native="debounce_check">
+          Músicas
+        </router-link>
       </vs-navbar-item>
       <vs-navbar-item :index="3">
         <router-link to="/favoritos/artistas">Favoritos</router-link>
@@ -26,44 +38,80 @@
       <vs-spacer/>
       <vs-input
         v-if="indexActive !== 3"
-        v-model="search"
+        :value="search"
         :color="colorx"
         vs-icon="search"
-        placeholder="Busca"/>
+        vs-label-placeholder="Busca"
+        @input="debounce_search"/>
     </vs-navbar>
     <router-view/>
   </div>
 </template>
 
 <script>
+import debounce from 'lodash/debounce';
+
 export default {
   data: () => ({
     colorx: '#4fc08d',
     indexActive: 0,
     search: '',
+    sParams: {},
   }),
+  watch: {
+    search() {
+      this.checkUrl();
+    },
+  },
   mounted() {
-    const query = (window.location.hash === '') ? window.location.pathname : window.location.hash;
-    const sQuery = query.split('/');
-    switch (sQuery[1]) {
-      case 'albums':
-        this.indexActive = 1;
-        break;
-      case 'musicas':
-        this.indexActive = 2;
-        break;
-      case 'favoritos':
-        this.indexActive = 3;
-        break;
-      default:
-        this.indexActive = 0;
-    }
+    this.checkUrl();
+  },
+  methods: {
+    checkUrl() {
+      const query = (window.location.hash === '') ? window.location.pathname : window.location.hash;
+      const sQuery = query.split('/');
+      switch (sQuery[1]) {
+        case 'albums':
+          this.indexActive = 1;
+          this.sParams.q = this.search;
+          this.sParams.type = 'album';
+          break;
+        case 'musicas':
+          this.indexActive = 2;
+          this.sParams.q = this.search;
+          this.sParams.type = 'track';
+          break;
+        case 'favoritos':
+          this.indexActive = 3;
+          this.sParams.q = '';
+          this.sParams.type = '';
+          break;
+        default:
+          this.indexActive = 0;
+          this.sParams.q = this.search;
+          this.sParams.type = 'artist';
+      }
+      if (this.sParams.q !== '') this.$store.dispatch('search', this.sParams);
+    },
+    /* eslint func-names: ["error", "never"] */
+    debounce_search: debounce(function (val) {
+      this.search = val;
+    }, 1000),
+    debounce_check: debounce(function () {
+      this.checkUrl();
+    }, 1000),
   },
 };
 </script>
 
-<style lang="scss">
-.myNavbar {
-  color: #fff;
-}
+<style scoped lang="scss">
+  #app /deep/ .myNavbar  {
+    color: #fff;
+    .vs-con-input-label {
+      color: #000;
+      &.is-label-placeholder {
+        margin-top: 0;
+      }
+    }
+  }
 </style>

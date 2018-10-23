@@ -57,7 +57,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .parentx-static {
   overflow: hidden;
   height: 500px;

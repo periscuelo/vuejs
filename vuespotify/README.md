@@ -1,5 +1,7 @@
 # vuespotify
 
+Precisa desbloquear o popup para logar no spotify!
+
 ## Project setup
 ```
 npm install

@@ -63,8 +63,9 @@ export default {
     sideBarIndex() {
       const myRoute = this.$route.path;
       const splitted = myRoute.split('/');
+      const splitIndex = (splitted.length === 3) ? 2 : 4;
       let ret = 0;
-      switch (splitted[2]) {
+      switch (splitted[splitIndex]) {
         case 'albums':
           ret = 2;
           break;

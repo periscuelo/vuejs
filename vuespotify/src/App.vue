@@ -61,20 +61,27 @@ export default {
     indexActive: 0,
     search: '',
     sParams: {},
+    myRoute: '',
   }),
+  computed: {
+    myRoutes() {
+      return this.$route.fullPath;
+    },
+  },
   watch: {
     search() {
       this.checkUrl();
     },
-  },
-  mounted() {
-    this.checkUrl();
+    myRoutes(newValue) {
+      this.myRoute = newValue;
+      this.checkUrl();
+    },
   },
   methods: {
     checkUrl() {
-      const query = (window.location.hash === '') ? window.location.pathname : window.location.hash;
-      const sQuery = query.split('/');
-      switch (sQuery[1]) {
+      const splitted = this.myRoute.split('/');
+      const splitIndex = (splitted.length === 2) ? 1 : 3;
+      switch (splitted[splitIndex]) {
         case 'albums':
           this.indexActive = 1;
           this.sParams.q = this.search;

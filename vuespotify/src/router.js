@@ -5,6 +5,7 @@ import Artistas from './views/Artistas.vue';
 Vue.use(Router);
 
 export default new Router({
+  mode: 'hash',
   routes: [
     {
       path: '/',

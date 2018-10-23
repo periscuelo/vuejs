@@ -167,7 +167,7 @@ export default {
       obj.artists = values;
       const newVal = JSON.stringify(obj);
       localStorage.setItem('vueSpotifyFavorites', newVal);
-    }
+    },
   },
 };
 </script>

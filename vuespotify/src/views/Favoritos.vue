@@ -5,9 +5,9 @@
         <div class="parentx-static">
           <vs-sidebar
             v-model="active"
+            :default-index="sideBarIndex"
             static-position
             spacer
-            default-index="1"
             color="primary"
             class="sidebarx">
             <div
@@ -59,6 +59,24 @@ export default {
     albumsFav: [],
     musicFavs: [],
   }),
+  computed: {
+    sideBarIndex() {
+      const myRoute = this.$route.path;
+      const splitted = myRoute.split('/');
+      let ret = 0;
+      switch (splitted[2]) {
+        case 'albums':
+          ret = 2;
+          break;
+        case 'tracks':
+          ret = 3;
+          break;
+        default:
+          ret = 1;
+      }
+      return ret;
+    },
+  },
   mounted() {
     this.getMyFavs();
     this.getArtistas(this.artistsFav);

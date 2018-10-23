@@ -56,7 +56,8 @@ export default {
       return { data, names: artNames.join(', ') };
     },
     showAlbum: obj => {
-      if (obj.data.album) return `${obj.names} | Álbum ${obj.data.album.name}`;
+      const ret = (obj.data.album) ? `${obj.names} | Álbum ${obj.data.album.name}` : '';
+      return ret;
     },
   },
   props: {

@@ -38,6 +38,7 @@
                   </span>
                 </h3>
                 <vs-checkbox
+                  v-model="albumsFav"
                   :vs-value="dados.id"
                   vs-icon="favorite"
                   color="danger">
@@ -99,6 +100,7 @@ export default {
     },
   },
   data: () => ({
+    albumsFav: [],
     musicFavs: [],
   }),
   computed: {
@@ -107,17 +109,39 @@ export default {
       msg: 'Albums/msg',
     }),
   },
+  watch: {
+    albumsFav(newValues) {
+      this.setMyFavs('albums', newValues);
+    },
+    musicFavs(newValues) {
+      this.setMyFavs('tracks', newValues);
+    },
+  },
   mounted() {
     this.getAlbum(this.$route.params.id2);
+    this.getMyFavs();
   },
   methods: {
     ...mapActions({
       getAlbum: 'Albums/getAlbum',
     }),
+    getMyFavs() {
+      const mf = localStorage.getItem('vueSpotifyFavorites');
+      const obj = JSON.parse(mf);
+      this.albumsFav = obj.albums;
+      this.musicFavs = obj.tracks;
+    },
     msToMnSec(ms) {
       const minutes = Math.floor(ms / 60000);
       const seconds = ((ms % 60000) / 1000).toFixed(0);
       return `${minutes} : ${(seconds < 10 ? '0' : '')} ${seconds}`;
+    },
+    setMyFavs(id, values) {
+      const mf = localStorage.getItem('vueSpotifyFavorites');
+      const obj = JSON.parse(mf);
+      obj[id] = values;
+      const newVal = JSON.stringify(obj);
+      localStorage.setItem('vueSpotifyFavorites', newVal);
     },
   },
 };

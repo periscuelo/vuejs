@@ -9,6 +9,16 @@ import Musicas from './modules/musicas';
 
 import { CHANGE_STATE } from './mutations-types';
 
+// Cria variável no localStorage
+if (!localStorage.getItem('vueSpotifyFavorites')) {
+  const favInit = {
+    artists: [],
+    albums: [],
+    tracks: [],
+  };
+  localStorage.setItem('vueSpotifyFavorites', JSON.stringify(favInit));
+}
+
 // Valida token
 let token = '';
 if (!sessionStorage.getItem('valid')) {

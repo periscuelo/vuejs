@@ -79,17 +79,35 @@ export default {
       return (this.searched.length === 0) ? this.dados : this.searched;
     },
   },
+  watch: {
+    musicFavs(newValues) {
+      this.setMyFavMusics(newValues);
+    },
+  },
   mounted() {
     this.getMusicas();
+    this.getMyFavMusics();
   },
   methods: {
     ...mapActions({
       getMusicas: 'Musicas/getList',
     }),
+    getMyFavMusics() {
+      const mf = localStorage.getItem('vueSpotifyFavorites');
+      const obj = JSON.parse(mf);
+      this.musicFavs = obj.tracks;
+    },
     msToMnSec(ms) {
       const minutes = Math.floor(ms / 60000);
       const seconds = ((ms % 60000) / 1000).toFixed(0);
       return `${minutes} : ${(seconds < 10 ? '0' : '')} ${seconds}`;
+    },
+    setMyFavMusics(values) {
+      const mf = localStorage.getItem('vueSpotifyFavorites');
+      const obj = JSON.parse(mf);
+      obj.tracks = values;
+      const newVal = JSON.stringify(obj);
+      localStorage.setItem('vueSpotifyFavorites', newVal);
     },
   },
 };

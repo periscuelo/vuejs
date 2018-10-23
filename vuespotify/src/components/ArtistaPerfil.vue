@@ -34,6 +34,7 @@
                   {{ dados.artista.nome }}
                 </h3>
                 <vs-checkbox
+                  v-model="artistsFav"
                   :vs-value="dados.artista.id"
                   vs-icon="favorite"
                   color="danger">
@@ -130,14 +131,23 @@ export default {
       return ret;
     },
   },
+  data: () => ({
+    artistsFav: [],
+  }),
   computed: {
     ...mapGetters({
       dados: 'Artistas/albums',
       msg: 'Artistas/msg',
     }),
   },
+  watch: {
+    artistsFav(newValues) {
+      this.setMyFavArtists(newValues);
+    },
+  },
   mounted() {
     this.getAlbums(this.$route.params.id);
+    this.getMyFavArtists();
   },
   methods: {
     ...mapActions({
@@ -146,6 +156,18 @@ export default {
     enter(artista, album) {
       this.$router.push({ path: `/artista/${artista}/album/${album}` });
     },
+    getMyFavArtists() {
+      const mf = localStorage.getItem('vueSpotifyFavorites');
+      const obj = JSON.parse(mf);
+      this.artistsFav = obj.artists;
+    },
+    setMyFavArtists(values) {
+      const mf = localStorage.getItem('vueSpotifyFavorites');
+      const obj = JSON.parse(mf);
+      obj.artists = values;
+      const newVal = JSON.stringify(obj);
+      localStorage.setItem('vueSpotifyFavorites', newVal);
+    }
   },
 };
 </script>

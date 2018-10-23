@@ -2,6 +2,9 @@
 
 Necessário desbloquear (permitir) popups pois requer login no spotify!
 
+### Demo
+[Vue Spotify](https://periscuelo.github.io/vuejs/vuespotify/)
+
 ## Project setup
 ```
 npm install

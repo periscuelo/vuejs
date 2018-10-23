@@ -14,7 +14,7 @@
       </vs-col>
     </vs-row>
     <vs-row
-      v-for="(grupos, index) in dados"
+      v-for="(grupos, index) in myData"
       :key="index">
       <vs-col
         v-for="(dado, index2) in grupos"
@@ -25,11 +25,12 @@
         vs-xs="6"
         vs-sm="4"
         vs-lg="2">
-        <vs-card>
+        <vs-card v-if="dado">
           <div
             class="avatar"
             @click="enter(dado.artists[0].id, dado.id)">
             <img
+              v-if="dado.images && dado.images[1]"
               :src="dado.images[1].url"
               size="300px">
             <div class="middle">
@@ -98,7 +99,11 @@ export default {
     ...mapGetters({
       dados: 'Albums/albums',
       msg: 'Albums/msg',
+      searched: 'searched',
     }),
+    myData() {
+      return (this.searched.length === 0) ? this.dados : this.searched;
+    },
   },
   mounted() {
     this.getAlbums();

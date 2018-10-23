@@ -15,7 +15,7 @@
     </vs-row>
     <vs-list>
       <vs-list-item
-        v-for="(dado, index) in dados"
+        v-for="(dado, index) in myData"
         :key="index"
         :title="dado.name"
         :subtitle="dado | showArtist | showAlbum">
@@ -47,13 +47,17 @@ export default {
   filters: {
     showArtist: data => {
       const artNames = [];
-      data.artists.map(obj => {
-        artNames.push(obj.name);
-        return true;
-      });
+      if (data.artists) {
+        data.artists.map(obj => {
+          artNames.push(obj.name);
+          return true;
+        });
+      }
       return { data, names: artNames.join(', ') };
     },
-    showAlbum: obj => `${obj.names} | Álbum ${obj.data.album.name}`,
+    showAlbum: obj => {
+      if (obj.data.album) return `${obj.names} | Álbum ${obj.data.album.name}`;
+    },
   },
   props: {
     favoritos: {
@@ -68,7 +72,11 @@ export default {
     ...mapGetters({
       dados: 'Musicas/musicas',
       msg: 'Musicas/msg',
+      searched: 'searched',
     }),
+    myData() {
+      return (this.searched.length === 0) ? this.dados : this.searched;
+    },
   },
   mounted() {
     this.getMusicas();

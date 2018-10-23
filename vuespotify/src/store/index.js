@@ -44,7 +44,7 @@ export default new Vuex.Store({
   state: {
     http,
     auth,
-    searched: {},
+    searched: [],
   },
   actions: {
     authAgain({ commit, dispatch }, obj) {
@@ -71,6 +71,9 @@ export default new Vuex.Store({
 
       const iId = setInterval(checkClosed, 1000);
     },
+    changeData({ commit }, obj) {
+      commit(CHANGE_STATE, { index: obj.index, value: obj.value });
+    },
     search({ getters, commit, dispatch }, obj) {
       commit(CHANGE_STATE, { index: 'msg', value: 'Pesquisando.... Aguarde!' });
       const datas = [];
@@ -79,7 +82,6 @@ export default new Vuex.Store({
         params: { q: obj.q, type: obj.type },
       };
       getters.http.get('/search', config).then(response => {
-        console.log(response.data);
         if (response.status === 204) {
           commit(CHANGE_STATE, { index: 'msg', value: 'Não há dados para exibir!' });
         } else {

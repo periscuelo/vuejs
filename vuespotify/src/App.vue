@@ -91,7 +91,12 @@ export default {
           this.sParams.q = this.search;
           this.sParams.type = 'artist';
       }
-      if (this.sParams.q !== '') this.$store.dispatch('search', this.sParams);
+      if (this.sParams.q !== '') {
+        this.$store.dispatch('search', this.sParams);
+      } else {
+        const data = { index: 'searched', value: [] };
+        this.$store.dispatch('changeData', data);
+      }
     },
     /* eslint func-names: ["error", "never"] */
     debounce_search: debounce(function (val) {

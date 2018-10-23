@@ -14,7 +14,7 @@
       </vs-col>
     </vs-row>
     <vs-row
-      v-for="(grupos, index) in dados"
+      v-for="(grupos, index) in myData"
       :key="index">
       <vs-col
         v-for="(dado, index2) in grupos"
@@ -26,9 +26,11 @@
         vs-sm="4"
         vs-lg="2">
         <div
+          v-if="dado"
           class="avatar"
           @click="enter(dado.id)">
           <vs-avatar
+            v-if="dado.images && dado.images[2]"
             :src="dado.images[2].url"
             size="120px"/>
           <vs-row>
@@ -45,7 +47,7 @@
               vs-justify="center"
               vs-align="center">
               <vs-tooltip
-                v-if="dado.genres[0]"
+                v-if="dado.genres"
                 :text="dado.genres | implode"
                 title="Gêneros"
                 position="right">
@@ -150,7 +152,11 @@ export default {
     ...mapGetters({
       dados: 'Artistas/artistas',
       msg: 'Artistas/msg',
+      searched: 'searched',
     }),
+    myData() {
+      return (this.searched.length === 0) ? this.dados : this.searched;
+    },
   },
   mounted() {
     this.getArtistas();

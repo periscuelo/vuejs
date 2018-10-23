@@ -82,7 +82,7 @@ const getters = {
 };
 
 const state = {
-  albums: {},
+  albums: [],
   album: {},
   msg: '',
 };

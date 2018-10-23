@@ -95,7 +95,7 @@ const getters = {
 };
 
 const state = {
-  artistas: {},
+  artistas: [],
   artista_albums: {},
   msg: '',
 };

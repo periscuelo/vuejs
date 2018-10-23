@@ -50,7 +50,7 @@ const getters = {
 };
 
 const state = {
-  musicas: {},
+  musicas: [],
   msg: '',
 };
 

@@ -2,10 +2,10 @@ import forEach from 'lodash/forEach';
 import { CHANGE_STATE } from '../mutations-types';
 
 const actions = {
-  getList({ rootGetters, commit, dispatch }) {
+  getList({ rootGetters, commit, dispatch }, ids) {
     commit(CHANGE_STATE, { index: 'msg', value: 'Carregando.... Aguarde!' });
     const datas = [];
-    const artistas = [
+    const artistas = ids || [
       '4cn4gMq0KXORHeYA45PcBi',
       '10naVTwNjE50daQVrN0bXh',
       '7uPgOaM3jjmkwuua1RgZHg',

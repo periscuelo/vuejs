@@ -1,9 +1,9 @@
 import { CHANGE_STATE } from '../mutations-types';
 
 const actions = {
-  getList({ rootGetters, commit, dispatch }) {
+  getList({ rootGetters, commit, dispatch }, ids) {
     commit(CHANGE_STATE, { index: 'msg', value: 'Carregando.... Aguarde!' });
-    const musicas = [
+    const musicas = ids || [
       '2AXmPzar7HNqI6ksI562UX',
       '7KCOMlNvjtkaQVBWwq3rd8',
       '548AxnT5rmzjT1AUpxgCoM',

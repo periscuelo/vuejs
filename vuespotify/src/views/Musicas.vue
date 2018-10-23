@@ -85,7 +85,7 @@ export default {
     },
   },
   mounted() {
-    this.getMusicas();
+    if (!this.favoritos) this.getMusicas();
     this.getMyFavMusics();
   },
   methods: {

@@ -106,7 +106,7 @@ export default {
     },
   },
   mounted() {
-    this.getAlbums();
+    if (!this.favoritos) this.getAlbums();
   },
   methods: {
     ...mapActions({

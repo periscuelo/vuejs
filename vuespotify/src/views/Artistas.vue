@@ -159,7 +159,7 @@ export default {
     },
   },
   mounted() {
-    this.getArtistas();
+    if (!this.favoritos) this.getArtistas();
   },
   methods: {
     ...mapActions({

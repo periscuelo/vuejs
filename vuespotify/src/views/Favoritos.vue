@@ -50,10 +50,35 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data: () => ({
     active: false,
+    artistsFav: [],
+    albumsFav: [],
+    musicFavs: [],
   }),
+  mounted() {
+    this.getMyFavs();
+    this.getArtistas(this.artistsFav);
+    this.getAlbums(this.albumsFav);
+    this.getMusicas(this.musicFavs);
+  },
+  methods: {
+    ...mapActions({
+      getArtistas: 'Artistas/getList',
+      getAlbums: 'Albums/getList',
+      getMusicas: 'Musicas/getList',
+    }),
+    getMyFavs() {
+      const mf = localStorage.getItem('vueSpotifyFavorites');
+      const obj = JSON.parse(mf);
+      this.artistsFav = obj.artists;
+      this.albumsFav = obj.albums;
+      this.musicFavs = obj.tracks;
+    },
+  },
 };
 </script>
 

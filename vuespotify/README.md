@@ -1,6 +1,6 @@
 # vuespotify
 
-Precisa desbloquear o popup para logar no spotify!
+Necessário desbloquear (permitir) popups pois requer login no spotify!
 
 ## Project setup
 ```

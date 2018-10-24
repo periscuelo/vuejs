@@ -107,7 +107,7 @@ export default {
       const splitIndex = (splitted.length === 3) ? 2 : 4;
       if (this.artistsFav.length > 0) {
         this.rArtists = 'artistas';
-        this.$router.push({ path: `/favoritos/${this.rArtists}` });
+        if (splitted[splitIndex] === 'vazio') this.$router.push({ path: `/favoritos/${this.rArtists}` });
       }
       if (this.albumsFav.length > 0) this.rAlbums = 'albums';
       if (this.musicFavs.length > 0) this.rTracks = 'musicas';

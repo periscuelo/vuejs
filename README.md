@@ -1,4 +1,4 @@
-# VueJs - Javascript - Quick Start
+ VueJs - Javascript - Quick Start
 
 Acho que ter apenas um arquivo utilizando VueJs 2.x com algumas linhas já fala por si só =)
 
@@ -27,4 +27,6 @@ Demos com CDN usando ECMA5:
 + [Relógio](https://periscuelo.github.io/vuejs/relogio/)
 + [Cronômetro](https://periscuelo.github.io/vuejs/cronometro/)
 + [Jogo da Velha](https://periscuelo.github.io/vuejs/tictactoe/)
+
+Demos com build usando Webpack e Vue CLI 3 
 + [Vue Spotify](https://periscuelo.github.io/vuejs/vuespotify/) (Precisa de permissão de popup)

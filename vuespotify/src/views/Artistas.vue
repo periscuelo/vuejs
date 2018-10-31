@@ -34,6 +34,11 @@
               v-if="dado.images && dado.images[2]"
               :src="dado.images[2].url"
               size="120px"/>
+            <vs-avatar
+              v-else
+              color="success"
+              icon="music_video"
+              size="120px"/>
             <vs-row>
               <vs-col
                 vs-type="flex"
@@ -177,11 +182,12 @@ export default {
 <style scoped lang="scss">
 .template-container /deep/ .avatar {
   position: relative;
+  text-align: center;
+  width: 100%;
   .con-img {
     opacity: 1;
     display: block;
     width: 100%;
-    height: auto;
     transition: .5s ease;
     backface-visibility: hidden;
   }
@@ -190,8 +196,8 @@ export default {
     opacity: 0;
     position: absolute;
     width: 0;
-    top: 34%;
-    left: 36%;
+    top: 33%;
+    left: 42%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     text-align: center;

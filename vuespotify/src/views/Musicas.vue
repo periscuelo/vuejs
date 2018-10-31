@@ -13,7 +13,7 @@
         </vs-alert>
       </vs-col>
     </vs-row>
-    <vs-list>
+    <vs-list v-else>
       <vs-list-item
         v-for="(dado, index) in myData"
         :key="index"
@@ -31,7 +31,7 @@
         <vs-checkbox
           v-model="musicFavs"
           :vs-value="dado.id"
-          vs-icon="favorite"
+          icon="favorite"
           color="danger">
           Favoritar
         </vs-checkbox>
@@ -89,7 +89,7 @@ export default {
       }
     },
   },
-  mounted() {
+  created() {
     if (!this.favoritos) this.getMusicas();
     this.getMyFavMusics();
   },
@@ -102,21 +102,12 @@ export default {
       const obj = JSON.parse(mf);
       this.musicFavs = obj.tracks;
     },
-    msToMnSec(ms) {
-      const minutes = Math.floor(ms / 60000);
-      const seconds = ((ms % 60000) / 1000).toFixed(0);
-      return `${minutes} : ${(seconds < 10 ? '0' : '')} ${seconds}`;
-    },
     setMyFavMusics(values) {
       const mf = localStorage.getItem('vueSpotifyFavorites');
       const obj = JSON.parse(mf);
       obj.tracks = values;
       const newVal = JSON.stringify(obj);
       localStorage.setItem('vueSpotifyFavorites', newVal);
-    },
-    test() {
-      // eslint-disable-next-line
-      alert('Ops! Este é apenas um teste, não vai rolar ouvir musica por aqui! Desculpe :(');
     },
   },
 };

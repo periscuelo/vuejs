@@ -13,7 +13,9 @@
         </vs-alert>
       </vs-col>
     </vs-row>
-    <vs-row vs-justify="center">
+    <vs-row
+      v-else
+      vs-justify="center">
       <vs-col
         vs-type="flex"
         vs-justify="center"
@@ -40,16 +42,16 @@
                 <vs-checkbox
                   v-model="albumsFav"
                   :vs-value="dados.id"
-                  vs-icon="favorite"
+                  icon="favorite"
                   color="danger">
                   Favoritar
                 </vs-checkbox>
                 <vs-button
+                  radius
                   color="success"
-                  vs-type="filled"
-                  vs-icon="replay"
+                  type="filled"
+                  icon="replay"
                   title="Voltar"
-                  class="radius"
                   @click="$router.go(-1)"/>
               </vs-col>
             </vs-row>
@@ -76,7 +78,7 @@
         <vs-checkbox
           v-model="musicFavs"
           :vs-value="dado.id"
-          vs-icon="favorite"
+          icon="favorite"
           color="danger">
           Favoritar
         </vs-checkbox>
@@ -118,7 +120,7 @@ export default {
       this.setMyFavs('tracks', newValues);
     },
   },
-  mounted() {
+  created() {
     this.getAlbum(this.$route.params.id2);
     this.getMyFavs();
   },
@@ -132,11 +134,6 @@ export default {
       this.albumsFav = obj.albums;
       this.musicFavs = obj.tracks;
     },
-    msToMnSec(ms) {
-      const minutes = Math.floor(ms / 60000);
-      const seconds = ((ms % 60000) / 1000).toFixed(0);
-      return `${minutes} : ${(seconds < 10 ? '0' : '')} ${seconds}`;
-    },
     setMyFavs(id, values) {
       const mf = localStorage.getItem('vueSpotifyFavorites');
       const obj = JSON.parse(mf);
@@ -144,24 +141,20 @@ export default {
       const newVal = JSON.stringify(obj);
       localStorage.setItem('vueSpotifyFavorites', newVal);
     },
-    test() {
-      // eslint-disable-next-line
-      alert('Ops! Este é apenas um teste, não vai rolar ouvir musica por aqui! Desculpe :(');
-    },
   },
 };
 </script>
 
 <style scoped lang="scss">
-  .template-container /deep/ .con-vs-card {
-    .con-vs-avatar {
-      cursor: default;
-    }
-    h3 {
-      span {
-        font-size: .9rem;
-        font-weight: normal;
-      }
+.template-container /deep/ .con-vs-card {
+  .con-vs-avatar {
+    cursor: default;
+  }
+  h3 {
+    span {
+      font-size: .9rem;
+      font-weight: normal;
     }
   }
+}
 </style>

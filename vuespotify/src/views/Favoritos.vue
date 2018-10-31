@@ -81,7 +81,7 @@ export default {
       return ret;
     },
   },
-  mounted() {
+  created() {
     this.getMyFavs();
     this.getArtistas(this.artistsFav);
     this.getAlbums(this.albumsFav);
@@ -133,6 +133,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.template-container /deep/ .vs-sidebar--background {
+  background-color: #fff;
+  width: 16.6%;
+}
 .parentx-static {
   overflow: hidden;
   height: 500px;

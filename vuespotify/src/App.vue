@@ -11,7 +11,7 @@
         Vue Spotify
       </vs-navbar-title>
 
-      <vs-navbar-item :index="0" >
+      <vs-navbar-item :index="0">
         <router-link
           to="/"
           @click.native="debounce_check">
@@ -44,8 +44,8 @@
         v-if="indexActive !== 3"
         :value="search"
         :color="colorx"
-        vs-icon="search"
-        vs-label-placeholder="Busca"
+        icon="search"
+        label-placeholder="Busca"
         @input="debounce_search"/>
     </vs-navbar>
     <router-view/>
@@ -120,8 +120,9 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-  #app /deep/ .myNavbar  {
+<style lang="scss">
+#app {
+  .myNavbar  {
     color: #fff;
     .vs-con-input-label {
       color: #000;
@@ -130,4 +131,8 @@ export default {
       }
     }
   }
+  .material-icons {
+    font-size: 16px;
+  }
+}
 </style>

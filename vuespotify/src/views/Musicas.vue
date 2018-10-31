@@ -18,7 +18,7 @@
         v-for="(dado, index) in myData"
         :key="index"
         :title="dado.name"
-        :subtitle="dado | showArtist | showAlbum">
+        :subtitle="dado | showArtistD | showAlbum">
         <template slot="avatar">
           <vs-avatar
             color="dark"
@@ -46,22 +46,6 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Musicas',
-  filters: {
-    showArtist: data => {
-      const artNames = [];
-      if (data.artists) {
-        data.artists.map(obj => {
-          artNames.push(obj.name);
-          return true;
-        });
-      }
-      return { data, names: artNames.join(', ') };
-    },
-    showAlbum: obj => {
-      const ret = (obj.data.album) ? `${obj.names} | Álbum ${obj.data.album.name}` : '';
-      return ret;
-    },
-  },
   props: {
     favoritos: {
       default: false,
@@ -72,11 +56,11 @@ export default {
     musicFavs: [],
   }),
   computed: {
-    ...mapGetters({
-      dados: 'Musicas/musicas',
-      msg: 'Musicas/msg',
-      searched: 'searched',
+    ...mapGetters('Musicas', {
+      dados: 'musicas',
+      msg: 'msg',
     }),
+    ...mapGetters(['searched']),
     myData() {
       return (this.searched.length === 0) ? this.dados : this.searched;
     },

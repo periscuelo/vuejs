@@ -54,12 +54,12 @@
               </vs-row>
               <vs-row v-if="dado.artists">
                 <vs-col
-                  :title="dado.artists | showArtist"
+                  :title="dado.artists | showArtistMA"
                   vs-type="flex"
                   vs-justify="center"
                   vs-align="center"
                   class="albumName">
-                  {{ dado.artists | showArtist }}
+                  {{ dado.artists | showArtistMA }}
                 </vs-col>
               </vs-row>
             </div>
@@ -75,22 +75,6 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Albums',
-  filters: {
-    showArtist: artists => {
-      let ret;
-      const artNames = [];
-      if (artists.length < 3) {
-        artists.map(obj => {
-          artNames.push(obj.name);
-          return true;
-        });
-        ret = artNames.join(' e ');
-      } else {
-        ret = 'Vários Artistas';
-      }
-      return ret;
-    },
-  },
   props: {
     favoritos: {
       default: false,
@@ -98,11 +82,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({
-      dados: 'Albums/albums',
-      msg: 'Albums/msg',
-      searched: 'searched',
+    ...mapGetters('Albums', {
+      dados: 'albums',
+      msg: 'msg',
     }),
+    ...mapGetters(['searched']),
     myData() {
       return (this.searched.length === 0) ? this.dados : this.searched;
     },

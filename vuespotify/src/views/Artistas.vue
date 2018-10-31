@@ -95,60 +95,6 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Artistas',
-  filters: {
-    popText: pop => {
-      let text;
-      switch (true) {
-        case (pop > 79):
-          text = 'Top';
-          break;
-        case (pop > 59 && pop < 80):
-          text = 'Legal';
-          break;
-        case (pop > 29 && pop < 60):
-          text = 'Bom';
-          break;
-        default:
-          text = 'Desconhecido';
-      }
-      return text;
-    },
-    popColor: pop => {
-      let color;
-      switch (true) {
-        case (pop > 79):
-          color = 'success';
-          break;
-        case (pop > 59 && pop < 80):
-          color = 'primary';
-          break;
-        case (pop > 29 && pop < 60):
-          color = 'warning';
-          break;
-        default:
-          color = '';
-      }
-      return color;
-    },
-    popIcon: pop => {
-      let icon;
-      switch (true) {
-        case (pop > 79):
-          icon = 'grade';
-          break;
-        case (pop > 59 && pop < 80):
-          icon = 'language';
-          break;
-        case (pop > 29 && pop < 60):
-          icon = 'group_work';
-          break;
-        default:
-          icon = '';
-      }
-      return icon;
-    },
-    implode: data => data.join(', '),
-  },
   props: {
     favoritos: {
       default: false,
@@ -156,11 +102,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({
-      dados: 'Artistas/artistas',
-      msg: 'Artistas/msg',
-      searched: 'searched',
+    ...mapGetters('Artistas', {
+      dados: 'artistas',
+      msg: 'msg',
     }),
+    ...mapGetters(['searched']),
     myData() {
       return (this.searched.length === 0) ? this.dados : this.searched;
     },

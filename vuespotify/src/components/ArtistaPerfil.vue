@@ -56,7 +56,6 @@
         </vs-col>
       </vs-row>
       <vs-row
-        v-if="!msg"
         vs-align="flex-start"
         vs-type="flex"
         vs-justify="center"
@@ -97,12 +96,12 @@
               </vs-row>
               <vs-row>
                 <vs-col
-                  :title="dado.artists | showArtist"
+                  :title="dado.artists | showArtistMA"
                   vs-type="flex"
                   vs-justify="center"
                   vs-align="center"
                   class="albumName">
-                  {{ dado.artists | showArtist }}
+                  {{ dado.artists | showArtistMA }}
                 </vs-col>
               </vs-row>
             </div>
@@ -118,29 +117,13 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'ArtistaPerfil',
-  filters: {
-    showArtist: artists => {
-      let ret;
-      const artNames = [];
-      if (artists.length < 3) {
-        artists.map(obj => {
-          artNames.push(obj.name);
-          return true;
-        });
-        ret = artNames.join(' e ');
-      } else {
-        ret = 'Vários Artistas';
-      }
-      return ret;
-    },
-  },
   data: () => ({
     artistsFav: [],
   }),
   computed: {
-    ...mapGetters({
-      dados: 'Artistas/albums',
-      msg: 'Artistas/msg',
+    ...mapGetters('Artistas', {
+      dados: 'albums',
+      msg: 'msg',
     }),
   },
   watch: {

@@ -4,9 +4,9 @@ import 'vuesax/dist/vuesax.css';
 import 'material-icons/iconfont/material-icons.css';
 
 import App from './App.vue';
-import router from './router';
 import mixins from './mixins';
-import store from './store/';
+import router from './router';
+import store from './store';
 
 Vue.use(Vuesax);
 Vue.mixin(mixins.utils);

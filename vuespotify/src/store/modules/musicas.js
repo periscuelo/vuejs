@@ -1,8 +1,8 @@
-import { CHANGE_STATE } from '../mutations-types';
+import { CHANGE_MUSICAS } from '../mutations-types';
 
 const actions = {
   getList({ rootGetters, commit, dispatch }, ids) {
-    commit(CHANGE_STATE, { index: 'msg', value: 'Carregando.... Aguarde!' });
+    dispatch('changeMsg', 'Carregando.... Aguarde!', { root: true });
     const musicas = ids || [
       '2AXmPzar7HNqI6ksI562UX',
       '7KCOMlNvjtkaQVBWwq3rd8',
@@ -23,10 +23,10 @@ const actions = {
     };
     rootGetters.http.get('/tracks', config).then(response => {
       if (response.status === 204) {
-        commit(CHANGE_STATE, { index: 'msg', value: 'Ainda não há músicas para exibir!' });
+        dispatch('changeMsg', 'Ainda não há músicas para exibir!', { root: true });
       } else {
-        commit(CHANGE_STATE, { index: 'musicas', value: response.data.tracks });
-        commit(CHANGE_STATE, { index: 'msg', value: '' });
+        commit(CHANGE_MUSICAS, response.data.tracks);
+        dispatch('changeMsg', '', { root: true });
       }
     }, error => {
       if (error.response.status === 401) {
@@ -39,19 +39,17 @@ const actions = {
 };
 
 const mutations = {
-  [CHANGE_STATE](state, obj) {
-    state[obj.index] = obj.value;
+  [CHANGE_MUSICAS](state, value) {
+    state.musicas = value;
   },
 };
 
 const getters = {
   musicas: state => state.musicas,
-  msg: state => state.msg,
 };
 
 const state = {
   musicas: [],
-  msg: '',
 };
 
 export default {

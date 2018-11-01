@@ -7,7 +7,7 @@ import Albums from './modules/albums';
 import Artistas from './modules/artistas';
 import Musicas from './modules/musicas';
 
-import { CHANGE_STATE } from './mutations-types';
+import { CHANGE_AUTH, CHANGE_MSG, CHANGE_SEARCH } from './mutations-types';
 
 // Cria variável no localStorage
 if (!localStorage.getItem('vueSpotifyFavorites')) {
@@ -55,6 +55,7 @@ export default new Vuex.Store({
     http,
     auth,
     searched: [],
+    msg: '',
   },
   actions: {
     authAgain({ commit, dispatch }, obj) {
@@ -67,7 +68,7 @@ export default new Vuex.Store({
             sessionStorage.setItem('valid', true);
             token = JSON.parse(response.request.response);
             auth = { headers: { Authorization: `${token.token_type} ${token.access_token}` } };
-            commit('CHANGE_STATE', { index: 'auth', value: auth });
+            commit(CHANGE_AUTH, auth);
             if (obj.id !== undefined) {
               dispatch(obj.action, obj.id);
             } else {
@@ -81,11 +82,11 @@ export default new Vuex.Store({
 
       const iId = setInterval(checkClosed, 1000);
     },
-    changeData({ commit }, obj) {
-      commit(CHANGE_STATE, { index: obj.index, value: obj.value });
+    changeMsg({ commit }, value) {
+      commit(CHANGE_MSG, value);
     },
     search({ getters, commit, dispatch }, obj) {
-      commit(CHANGE_STATE, { index: 'msg', value: 'Pesquisando.... Aguarde!' });
+      dispatch('changeMsg', 'Pesquisando.... Aguarde!');
       const datas = [];
       const config = {
         headers: getters.auth.headers,
@@ -93,7 +94,7 @@ export default new Vuex.Store({
       };
       getters.http.get('/search', config).then(response => {
         if (response.status === 204) {
-          commit(CHANGE_STATE, { index: 'msg', value: 'Não há dados para exibir!' });
+          dispatch('changeMsg', 'Não há dados para exibir!');
         } else {
           let searchs = [];
           forEach(response.data[`${obj.type}s`].items, (value, index) => {
@@ -105,8 +106,8 @@ export default new Vuex.Store({
           });
           if (searchs.length > 0) datas.push(searchs);
           const myValues = (obj.type !== 'track') ? datas : response.data[`${obj.type}s`].items;
-          commit(CHANGE_STATE, { index: 'searched', value: myValues });
-          commit(CHANGE_STATE, { index: 'msg', value: '' });
+          commit(CHANGE_SEARCH, myValues);
+          dispatch('changeMsg', '');
         }
       }, error => {
         if (error.response.status === 401) {
@@ -118,8 +119,14 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    [CHANGE_STATE](state, obj) {
-      state[obj.index] = obj.value;
+    [CHANGE_AUTH](state, value) {
+      state.auth = value;
+    },
+    [CHANGE_MSG](state, value) {
+      state.msg = value;
+    },
+    [CHANGE_SEARCH](state, value) {
+      state.searched = value;
     },
   },
   getters: {

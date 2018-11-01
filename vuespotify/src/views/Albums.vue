@@ -84,9 +84,8 @@ export default {
   computed: {
     ...mapGetters('Albums', {
       dados: 'albums',
-      msg: 'msg',
     }),
-    ...mapGetters(['searched']),
+    ...mapGetters(['msg', 'searched']),
     myData() {
       return (this.searched.length === 0) ? this.dados : this.searched;
     },

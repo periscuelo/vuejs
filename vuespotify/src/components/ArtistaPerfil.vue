@@ -123,8 +123,8 @@ export default {
   computed: {
     ...mapGetters('Artistas', {
       dados: 'albums',
-      msg: 'msg',
     }),
+    ...mapGetters(['msg']),
   },
   watch: {
     artistsFav(newValues) {

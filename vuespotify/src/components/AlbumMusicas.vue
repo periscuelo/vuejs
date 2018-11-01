@@ -99,8 +99,8 @@ export default {
   computed: {
     ...mapGetters('Albums', {
       dados: 'album',
-      msg: 'msg',
     }),
+    ...mapGetters(['msg']),
   },
   watch: {
     albumsFav(newValues) {
@@ -115,9 +115,7 @@ export default {
     this.getMyFavs();
   },
   methods: {
-    ...mapActions({
-      getAlbum: 'Albums/getAlbum',
-    }),
+    ...mapActions('Albums', ['getAlbum']),
     getMyFavs() {
       const mf = localStorage.getItem('vueSpotifyFavorites');
       const obj = JSON.parse(mf);

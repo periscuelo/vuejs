@@ -104,9 +104,8 @@ export default {
   computed: {
     ...mapGetters('Artistas', {
       dados: 'artistas',
-      msg: 'msg',
     }),
-    ...mapGetters(['searched']),
+    ...mapGetters(['msg', 'searched']),
     myData() {
       return (this.searched.length === 0) ? this.dados : this.searched;
     },

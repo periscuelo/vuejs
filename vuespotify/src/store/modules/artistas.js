@@ -1,9 +1,9 @@
 import forEach from 'lodash/forEach';
-import { CHANGE_STATE } from '../mutations-types';
+import { CHANGE_ARTISTAS, CHANGE_ARTISTAS_ALBUM } from '../mutations-types';
 
 const actions = {
   getList({ rootGetters, commit, dispatch }, ids) {
-    commit(CHANGE_STATE, { index: 'msg', value: 'Carregando.... Aguarde!' });
+    dispatch('changeMsg', 'Carregando.... Aguarde!', { root: true });
     const datas = [];
     const artistas = ids || [
       '4cn4gMq0KXORHeYA45PcBi',
@@ -26,7 +26,7 @@ const actions = {
     rootGetters.http.get('/artists', config).then(response => {
       let artists = [];
       if (response.status === 204) {
-        commit(CHANGE_STATE, { index: 'msg', value: 'Ainda não há artistas para exibir!' });
+        dispatch('changeMsg', 'Ainda não há artistas para exibir!', { root: true });
       } else {
         forEach(response.data.artists, (value, index) => {
           if (index > 0 && index % 6 === 0) {
@@ -36,8 +36,8 @@ const actions = {
           artists.push(value);
         });
         if (artists.length > 0) datas.push(artists);
-        commit(CHANGE_STATE, { index: 'artistas', value: datas });
-        commit(CHANGE_STATE, { index: 'msg', value: '' });
+        commit(CHANGE_ARTISTAS, datas);
+        dispatch('changeMsg', '', { root: true });
       }
     }, error => {
       if (error.response.status === 401) {
@@ -48,14 +48,14 @@ const actions = {
     });
   },
   getArtistAlbums({ rootGetters, commit, dispatch }, id) {
-    commit(CHANGE_STATE, { index: 'msg', value: 'Carregando.... Aguarde!' });
+    dispatch('changeMsg', 'Carregando.... Aguarde!', { root: true });
     const config = {
       headers: rootGetters.auth.headers,
     };
     const artist = {};
     rootGetters.http.get(`/artists/${id}`, config).then(response => {
       if (response.status === 204) {
-        commit(CHANGE_STATE, { index: 'msg', value: 'Ainda não há detalhes deste artista para exibir!' });
+        dispatch('changeMsg', 'Ainda não há detalhes deste artista para exibir!', { root: true });
       } else {
         artist.id = response.data.id;
         artist.nome = response.data.name;
@@ -67,10 +67,10 @@ const actions = {
 
     rootGetters.http.get(`/artists/${id}/albums`, config).then(response => {
       if (response.status === 204) {
-        commit(CHANGE_STATE, { index: 'msg', value: 'Ainda não há albums deste artista para exibir!' });
+        dispatch('changeMsg', 'Ainda não há albums deste artista para exibir!', { root: true });
       } else {
-        commit(CHANGE_STATE, { index: 'artista_albums', value: { artista: artist, albums: response.data.items } });
-        commit(CHANGE_STATE, { index: 'msg', value: '' });
+        commit(CHANGE_ARTISTAS_ALBUM, { artista: artist, albums: response.data.items });
+        dispatch('changeMsg', '', { root: true });
       }
     }, error => {
       if (error.response.status === 401) {
@@ -83,21 +83,22 @@ const actions = {
 };
 
 const mutations = {
-  [CHANGE_STATE](state, obj) {
-    state[obj.index] = obj.value;
+  [CHANGE_ARTISTAS](state, value) {
+    state.artistas = value;
+  },
+  [CHANGE_ARTISTAS_ALBUM](state, value) {
+    state.artista_albums = value;
   },
 };
 
 const getters = {
   artistas: state => state.artistas,
   albums: state => state.artista_albums,
-  msg: state => state.msg,
 };
 
 const state = {
   artistas: [],
   artista_albums: {},
-  msg: '',
 };
 
 export default {

@@ -1,9 +1,9 @@
 import forEach from 'lodash/forEach';
-import { CHANGE_STATE } from '../mutations-types';
+import { CHANGE_ALBUM, CHANGE_ALBUMS } from '../mutations-types';
 
 const actions = {
   getList({ rootGetters, commit, dispatch }, ids) {
-    commit(CHANGE_STATE, { index: 'msg', value: 'Carregando.... Aguarde!' });
+    dispatch('changeMsg', 'Carregando.... Aguarde!', { root: true });
     const datas = [];
     const albumsIds = ids || [
       '5FwdSSQrDlVvGQ14hpPO9S',
@@ -25,7 +25,7 @@ const actions = {
     };
     rootGetters.http.get('/albums', config).then(response => {
       if (response.status === 204) {
-        commit(CHANGE_STATE, { index: 'msg', value: 'Ainda não há albums para exibir!' });
+        dispatch('changeMsg', 'Ainda não há albums para exibir!', { root: true });
       } else {
         let albums = [];
         forEach(response.data.albums, (value, index) => {
@@ -36,8 +36,8 @@ const actions = {
           albums.push(value);
         });
         if (albums.length > 0) datas.push(albums);
-        commit(CHANGE_STATE, { index: 'albums', value: datas });
-        commit(CHANGE_STATE, { index: 'msg', value: '' });
+        commit(CHANGE_ALBUMS, datas);
+        dispatch('changeMsg', '', { root: true });
       }
     }, error => {
       if (error.response.status === 401) {
@@ -48,16 +48,16 @@ const actions = {
     });
   },
   getAlbum({ rootGetters, commit, dispatch }, id) {
-    commit(CHANGE_STATE, { index: 'msg', value: 'Carregando.... Aguarde!' });
+    dispatch('changeMsg', 'Carregando.... Aguarde!', { root: true });
     const config = {
       headers: rootGetters.auth.headers,
     };
     rootGetters.http.get(`/albums/${id}`, config).then(response => {
       if (response.status === 204) {
-        commit(CHANGE_STATE, { index: 'msg', value: 'Ainda não há albums deste artista para exibir!' });
+        dispatch('changeMsg', 'Ainda não há albums deste artista para exibir!', { root: true });
       } else {
-        commit(CHANGE_STATE, { index: 'album', value: response.data });
-        commit(CHANGE_STATE, { index: 'msg', value: '' });
+        commit(CHANGE_ALBUM, response.data);
+        dispatch('changeMsg', '', { root: true });
       }
     }, error => {
       if (error.response.status === 401) {
@@ -70,21 +70,22 @@ const actions = {
 };
 
 const mutations = {
-  [CHANGE_STATE](state, obj) {
-    state[obj.index] = obj.value;
+  [CHANGE_ALBUM](state, value) {
+    state.album = value;
+  },
+  [CHANGE_ALBUMS](state, value) {
+    state.albums = value;
   },
 };
 
 const getters = {
   albums: state => state.albums,
   album: state => state.album,
-  msg: state => state.msg,
 };
 
 const state = {
   albums: [],
   album: {},
-  msg: '',
 };
 
 export default {

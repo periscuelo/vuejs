@@ -52,10 +52,10 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    http,
     auth,
-    searched: [],
+    http,
     msg: '',
+    searched: [],
   },
   actions: {
     authAgain({ commit, dispatch }, obj) {
@@ -132,6 +132,7 @@ export default new Vuex.Store({
   getters: {
     auth: state => state.auth,
     http: state => state.http,
+    msg: state => state.msg,
     searched: state => state.searched,
   },
   modules: {

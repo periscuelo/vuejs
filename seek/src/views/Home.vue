@@ -158,10 +158,20 @@ export default {
     ...mapActions('Products', ['setProductData', 'setProductDiscount']),
     add() {
       const [item] = this.products.filter(value => (this.product === value.id));
-      item.qty = this.quantity;
-      item.subtotal = (item.price * this.quantity);
-      this.items.push(item);
-      this.total += item.subtotal;
+      const itemIndex = this.items.findIndex(item => this.product === item.id);
+      const itemQty = parseInt(this.quantity, 10);
+      const itemSubtotal = (item.price * itemQty);
+
+      if (itemIndex >= 0) {
+        this.items[itemIndex].qty += itemQty;
+        this.items[itemIndex].subtotal += itemSubtotal;
+      } else {
+        item.qty = itemQty;
+        item.subtotal = itemSubtotal;
+        this.items.push(item);
+      }
+
+      this.total += itemSubtotal;
       this.product = null;
       this.quantity = 0;
     },

@@ -4,7 +4,7 @@ const connection = mysql.createPool({
   connectionLimit: 100,
   host: 'localhost',
   user: 'myuser',
-  password: 'mypass',
+  password: 'mypassword',
   database: 'seek',
   port: 3306,
   debug: false,

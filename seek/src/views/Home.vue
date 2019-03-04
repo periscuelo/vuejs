@@ -158,7 +158,7 @@ export default {
     ...mapActions('Products', ['setProductData', 'setProductDiscount']),
     add() {
       const [item] = this.products.filter(value => (this.product === value.id));
-      const itemIndex = this.items.findIndex(item => this.product === item.id);
+      const itemIndex = this.items.findIndex(value => (this.product === value.id));
       const itemQty = parseInt(this.quantity, 10);
       const itemSubtotal = (item.price * itemQty);
 

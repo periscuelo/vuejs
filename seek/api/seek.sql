@@ -92,7 +92,7 @@ CREATE TABLE `products_discounts` (
   `product_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `amount` int(11) DEFAULT NULL,
-  `sum` int(11) DEFAULT NULL,
+  `decrease` int(11) DEFAULT NULL,
   `new_price` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -100,11 +100,11 @@ CREATE TABLE `products_discounts` (
 -- Extraindo dados da tabela `products_discounts`
 --
 
-INSERT INTO `products_discounts` (`id`, `product_id`, `name`, `amount`, `sum`, `new_price`) VALUES
-(1, 1, 'Gets a for 3 for 2 deal', 2, 1, NULL),
+INSERT INTO `products_discounts` (`id`, `product_id`, `name`, `amount`, `decrease`, `new_price`) VALUES
+(1, 1, 'Gets a for 3 for 2 deal', 3, 1, NULL),
 (2, 2, 'Standout Ads drops to $299', NULL, NULL, '299.00'),
 (3, 3, 'Gets a discount on Premium Ads where 4 or more are purchased', 4, NULL, '379.99'),
-(4, 1, 'Gets a 5 for 4 deal', 4, 1, NULL),
+(4, 1, 'Gets a 5 for 4 deal', 5, 1, NULL),
 (5, 2, 'Standout Ads drops to $309.99', NULL, NULL, '309.99'),
 (6, 3, 'Gets a discount on Premium Ads when 3 or more are purchased', 3, NULL, '389.99');
 

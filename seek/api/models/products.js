@@ -40,7 +40,7 @@ const discounts = (application, res, productId) => {
         const sql = /* sql */`
           SELECT id,
                  amount,
-                 sum,
+                 decrease,
                  new_price
           FROM products_discounts
           WHERE product_id = ?`;

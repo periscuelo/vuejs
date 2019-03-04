@@ -8,7 +8,7 @@
             :options="optsCustomer"
             data="customer"
             title="customer"
-            @change="setVals"
+            @change="setDataVals"
           />
         </b-col>
       </b-row>
@@ -19,7 +19,7 @@
             :options="optsProduct"
             data="product"
             title="product"
-            @change="setVals"
+            @change="setDataVals"
           />
         </b-col>
         <b-col cols="2">
@@ -37,7 +37,7 @@
             variant="outline-success"
             size="sm"
             class="mt-3"
-            @click="add"
+            @click="addToCart"
           >
             Add to Cart
           </b-button>
@@ -59,7 +59,7 @@
               <b-button
                 variant="outline-danger"
                 size="sm"
-                @click="remove(data.index)"
+                @click="removeOfCart(data.index)"
               >
                 X
               </b-button>
@@ -75,7 +75,7 @@
           Total:
         </b-col>
         <b-col cols="2">
-          $ {{ total.toString().replace('.', ',') }}
+          $ {{ total.toFixed(2).toString().replace('.', ',') }}
         </b-col>
       </b-row>
     </b-container>
@@ -97,6 +97,7 @@ export default {
     customer: null,
     product: null,
     quantity: 0,
+    newQuantity: 0,
     total: 0,
     addDisabled: true,
     fields: [
@@ -106,12 +107,12 @@ export default {
       },
       {
         key: 'price',
-        formatter: value => `$ ${value.toString().replace('.', ',')}`,
+        formatter: value => `$ ${value.toFixed(2).toString().replace('.', ',')}`,
       },
       'qty',
       {
         key: 'subtotal',
-        formatter: value => `$ ${value.toString().replace('.', ',')}`,
+        formatter: value => `$ ${value.toFixed(2).toString().replace('.', ',')}`,
       },
       {
         key: 'id',
@@ -133,6 +134,7 @@ export default {
       }
       this.product = null;
       this.quantity = 0;
+      this.newQuantity = 0;
       this.total = 0;
       this.items = [];
     },
@@ -156,24 +158,74 @@ export default {
   methods: {
     ...mapActions('Customers', ['setCustomerData', 'setCustomerDiscount']),
     ...mapActions('Products', ['setProductData', 'setProductDiscount']),
-    add() {
-      const [item] = this.products.filter(value => (this.product === value.id));
+    addToCart() {
+      this.quantity = parseInt(this.quantity, 10);
+      this.newQuantity = this.quantity;
+      const mProducts = JSON.parse(JSON.stringify(this.products)); // removing the reactivity
+      const [item] = mProducts.filter(value => (this.product === value.id));
       const itemIndex = this.items.findIndex(value => (this.product === value.id));
-      const itemQty = parseInt(this.quantity, 10);
-      const itemSubtotal = (item.price * itemQty);
+
+      // eslint-disable-next-line
+      const [discFounds] = this.discProducts.filter(discounts => {
+        return this.discCustomers.find(value => (value === discounts.id));
+      });
+
+      // Have a discount
+      if (discFounds !== undefined) {
+        // for for deal
+        if (discFounds.amount && discFounds.decrease) {
+          if (itemIndex >= 0) {
+            const myQty = (this.items[itemIndex].qty + this.newQuantity);
+            if (myQty < discFounds.amount) {
+              this.newQuantity = myQty;
+            } else {
+              this.newQuantity = (
+                myQty - (Math.floor(myQty / discFounds.amount) * discFounds.decrease)
+              );
+            }
+            this.items[itemIndex].subtotal = 0;
+          } else if (this.quantity >= discFounds.amount) {
+            if (this.quantity % discFounds.amount === 0) {
+              this.newQuantity -= ((this.quantity / discFounds.amount) * discFounds.decrease);
+            } else {
+              this.newQuantity -= (
+                Math.floor(this.quantity / discFounds.amount) * discFounds.decrease
+              );
+            }
+          }
+        // new price per amount
+        } else if (discFounds.amount && discFounds.new_price) {
+          if (itemIndex >= 0) {
+            const myQty = (this.items[itemIndex].qty + this.newQuantity);
+            if (myQty >= discFounds.amount) {
+              item.price = discFounds.new_price;
+              this.items[itemIndex].price = item.price;
+              this.items[itemIndex].subtotal = (item.price * this.items[itemIndex].qty);
+            }
+          } else if (this.newQuantity >= discFounds.amount) {
+            item.price = discFounds.new_price;
+          }
+        // new price
+        } else {
+          item.price = discFounds.new_price;
+        }
+      }
+
+      const itemSubtotal = (item.price * this.newQuantity);
 
       if (itemIndex >= 0) {
-        this.items[itemIndex].qty += itemQty;
+        this.items[itemIndex].qty += this.quantity;
         this.items[itemIndex].subtotal += itemSubtotal;
       } else {
-        item.qty = itemQty;
+        item.qty = this.quantity;
         item.subtotal = itemSubtotal;
         this.items.push(item);
       }
 
-      this.total += itemSubtotal;
+      this.total = this.items.reduce((prev, curr) => (prev + curr.subtotal), 0);
       this.product = null;
       this.quantity = 0;
+      this.newQuantity = 0;
     },
     async getCustomers() {
       try {
@@ -207,11 +259,11 @@ export default {
         console.log('Não foi possível carregar os dados da API!', error);
       }
     },
-    remove(index) {
+    removeOfCart(index) {
       this.total -= this.items[index].subtotal;
       this.items.splice(index, 1);
     },
-    setVals(id, item) {
+    setDataVals(id, item) {
       this[item] = id;
     },
   },

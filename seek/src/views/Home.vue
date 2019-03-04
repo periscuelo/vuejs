@@ -185,13 +185,9 @@ export default {
             }
             this.items[itemIndex].subtotal = 0;
           } else if (this.quantity >= discFounds.amount) {
-            if (this.quantity % discFounds.amount === 0) {
-              this.newQuantity -= ((this.quantity / discFounds.amount) * discFounds.decrease);
-            } else {
-              this.newQuantity -= (
-                Math.floor(this.quantity / discFounds.amount) * discFounds.decrease
-              );
-            }
+            this.newQuantity -= (
+              Math.floor(this.quantity / discFounds.amount) * discFounds.decrease
+            );
           }
         // new price per amount
         } else if (discFounds.amount && discFounds.new_price) {

@@ -67,6 +67,17 @@
           </b-table>
         </b-col>
       </b-row>
+      <b-row v-if="discounts > 0">
+        <b-col
+          cols="10"
+          class="text-right"
+        >
+          Discounts:
+        </b-col>
+        <b-col cols="2">
+          $ {{ discounts.toFixed(2).toString().replace('.', ',') }}
+        </b-col>
+      </b-row>
       <b-row v-if="items.length > 0">
         <b-col
           cols="10"
@@ -99,6 +110,8 @@ export default {
     quantity: 0,
     newQuantity: 0,
     total: 0,
+    discounts: 0,
+    discountsPrice: 0,
     addDisabled: true,
     fields: [
       {
@@ -136,6 +149,7 @@ export default {
       this.quantity = 0;
       this.newQuantity = 0;
       this.total = 0;
+      this.discounts = 0;
       this.items = [];
     },
     product(value) {
@@ -194,11 +208,13 @@ export default {
           if (itemIndex >= 0) {
             const myQty = (this.items[itemIndex].qty + this.newQuantity);
             if (myQty >= discFounds.amount) {
+              this.discountsPrice = (item.price - discFounds.new_price);
               item.price = discFounds.new_price;
               this.items[itemIndex].price = item.price;
               this.items[itemIndex].subtotal = (item.price * this.items[itemIndex].qty);
             }
           } else if (this.newQuantity >= discFounds.amount) {
+            this.discountsPrice = (item.price - discFounds.new_price);
             item.price = discFounds.new_price;
           }
         // new price
@@ -212,13 +228,21 @@ export default {
       if (itemIndex >= 0) {
         this.items[itemIndex].qty += this.quantity;
         this.items[itemIndex].subtotal += itemSubtotal;
+        this.items[itemIndex].discount = (
+          Math.abs(this.items[itemIndex].subtotal
+                   - (this.items[itemIndex].qty * this.items[itemIndex].price))
+        );
       } else {
         item.qty = this.quantity;
         item.subtotal = itemSubtotal;
+        item.discount = Math.abs(item.subtotal - (item.qty * item.price));
         this.items.push(item);
       }
 
       this.total = this.items.reduce((prev, curr) => (prev + curr.subtotal), 0);
+      this.discounts = (
+        this.items.reduce((prev, curr) => (prev + curr.discount), 0) + this.discountsPrice
+      );
       this.product = null;
       this.quantity = 0;
       this.newQuantity = 0;
@@ -257,7 +281,11 @@ export default {
     },
     removeOfCart(index) {
       this.total -= this.items[index].subtotal;
+      this.discountsPrice = (this.items[index].discount === 0) ? 0 : this.discountsPrice;
       this.items.splice(index, 1);
+      this.discounts = (
+        this.items.reduce((prev, curr) => (prev + curr.discount), 0) + this.discountsPrice
+      );
     },
     setDataVals(id, item) {
       this[item] = id;

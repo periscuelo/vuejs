@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'ArtistaPerfil',
@@ -121,10 +121,10 @@ export default {
     artistsFav: [],
   }),
   computed: {
-    ...mapGetters('Artistas', {
-      dados: 'albums',
+    ...mapState('Artistas', {
+      dados: 'artista_albums',
     }),
-    ...mapGetters(['msg']),
+    ...mapState(['msg']),
   },
   watch: {
     artistsFav(newValues) {
@@ -136,8 +136,8 @@ export default {
     this.getMyFavArtists();
   },
   methods: {
-    ...mapActions({
-      getAlbums: 'Artistas/getArtistAlbums',
+    ...mapActions('Artistas', {
+      getAlbums: 'getArtistAlbums',
     }),
     enter(artista, album) {
       this.$router.push({ path: `/artista/${artista}/album/${album}` });

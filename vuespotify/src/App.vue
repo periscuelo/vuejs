@@ -54,6 +54,7 @@
 
 <script>
 import debounce from 'lodash/debounce';
+import { mapMutations } from 'vuex';
 
 export default {
   data: () => ({
@@ -78,6 +79,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({ changeData: 'CHANGE_SEARCH' }),
     checkUrl() {
       const splitted = this.myRoute.split('/');
       const splitIndex = (splitted.length <= 3) ? 1 : 3;
@@ -105,8 +107,7 @@ export default {
       if (this.sParams.q !== '') {
         this.$store.dispatch('search', this.sParams);
       } else {
-        const data = { index: 'searched', value: [] };
-        this.$store.dispatch('changeData', data);
+        this.changeData([]);
       }
     },
     /* eslint func-names: ["error", "never"] */

@@ -1,9 +1,10 @@
 import forEach from 'lodash/forEach';
-import { CHANGE_ARTISTAS, CHANGE_ARTISTAS_ALBUM } from '../mutations-types';
+import ArtistService from '../../services/artists';
+import { CHANGE_ARTISTAS, CHANGE_ARTISTAS_ALBUM, CHANGE_MSG } from '../mutations-types';
 
 const actions = {
-  getList({ rootGetters, commit, dispatch }, ids) {
-    dispatch('changeMsg', 'Carregando.... Aguarde!', { root: true });
+  getList({ commit }, ids) {
+    commit(CHANGE_MSG, 'Carregando.... Aguarde!', { root: true });
     const datas = [];
     const artistas = ids || [
       '4cn4gMq0KXORHeYA45PcBi',
@@ -20,13 +21,12 @@ const actions = {
       '6TYimByryGphZCtwYopH0y',
     ];
     const config = {
-      headers: rootGetters.auth.headers,
       params: { ids: artistas.join(',') },
     };
-    rootGetters.http.get('/artists', config).then(response => {
+    ArtistService.getArtists(config).then(response => {
       let artists = [];
       if (response.status === 204) {
-        dispatch('changeMsg', 'Ainda não há artistas para exibir!', { root: true });
+        commit(CHANGE_MSG, 'Ainda não há artistas para exibir!', { root: true });
       } else {
         forEach(response.data.artists, (value, index) => {
           if (index > 0 && index % 6 === 0) {
@@ -37,25 +37,21 @@ const actions = {
         });
         if (artists.length > 0) datas.push(artists);
         commit(CHANGE_ARTISTAS, datas);
-        dispatch('changeMsg', '', { root: true });
+        commit(CHANGE_MSG, '', { root: true });
       }
     }, error => {
       if (error.response.status === 401) {
         sessionStorage.setItem('valid', false);
-        dispatch('authAgain', { action: 'Artistas/getList' }, { root: true });
       }
       console.log(error);
     });
   },
-  getArtistAlbums({ rootGetters, commit, dispatch }, id) {
-    dispatch('changeMsg', 'Carregando.... Aguarde!', { root: true });
-    const config = {
-      headers: rootGetters.auth.headers,
-    };
+  getArtistAlbums({ commit }, id) {
+    commit(CHANGE_MSG, 'Carregando.... Aguarde!', { root: true });
     const artist = {};
-    rootGetters.http.get(`/artists/${id}`, config).then(response => {
+    ArtistService.getArtist(id).then(response => {
       if (response.status === 204) {
-        dispatch('changeMsg', 'Ainda não há detalhes deste artista para exibir!', { root: true });
+        commit(CHANGE_MSG, 'Ainda não há detalhes deste artista para exibir!', { root: true });
       } else {
         artist.id = response.data.id;
         artist.nome = response.data.name;
@@ -63,19 +59,18 @@ const actions = {
       }
     });
 
-    config.params = { limit: 5 };
+    const params = { limit: 5 };
 
-    rootGetters.http.get(`/artists/${id}/albums`, config).then(response => {
+    ArtistService.getArtistAlbums(id, params).then(response => {
       if (response.status === 204) {
-        dispatch('changeMsg', 'Ainda não há albums deste artista para exibir!', { root: true });
+        commit(CHANGE_MSG, 'Ainda não há albums deste artista para exibir!', { root: true });
       } else {
         commit(CHANGE_ARTISTAS_ALBUM, { artista: artist, albums: response.data.items });
-        dispatch('changeMsg', '', { root: true });
+        commit(CHANGE_MSG, '', { root: true });
       }
     }, error => {
       if (error.response.status === 401) {
         sessionStorage.setItem('valid', false);
-        dispatch('authAgain', { action: 'Artistas/getArtistAlbums', id }, { root: true });
       }
       console.log(error);
     });
@@ -91,11 +86,6 @@ const mutations = {
   },
 };
 
-const getters = {
-  artistas: state => state.artistas,
-  albums: state => state.artista_albums,
-};
-
 const state = {
   artistas: [],
   artista_albums: {},
@@ -103,8 +93,7 @@ const state = {
 
 export default {
   namespaced: true,
-  state,
   actions,
   mutations,
-  getters,
+  state,
 };

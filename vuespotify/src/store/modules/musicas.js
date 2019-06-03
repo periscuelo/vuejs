@@ -1,8 +1,9 @@
-import { CHANGE_MUSICAS } from '../mutations-types';
+import MusicService from '../../services/musics';
+import { CHANGE_MUSICAS, CHANGE_MSG } from '../mutations-types';
 
 const actions = {
-  getList({ rootGetters, commit, dispatch }, ids) {
-    dispatch('changeMsg', 'Carregando.... Aguarde!', { root: true });
+  getList({ commit }, ids) {
+    commit(CHANGE_MSG, 'Carregando.... Aguarde!', { root: true });
     const musicas = ids || [
       '2AXmPzar7HNqI6ksI562UX',
       '7KCOMlNvjtkaQVBWwq3rd8',
@@ -18,20 +19,18 @@ const actions = {
       '2hGsyzJD1GiYlOD4bEb7KD',
     ];
     const config = {
-      headers: rootGetters.auth.headers,
       params: { ids: musicas.join(',') },
     };
-    rootGetters.http.get('/tracks', config).then(response => {
+    MusicService.getTracks(config).then(response => {
       if (response.status === 204) {
-        dispatch('changeMsg', 'Ainda não há músicas para exibir!', { root: true });
+        commit(CHANGE_MSG, 'Ainda não há músicas para exibir!', { root: true });
       } else {
         commit(CHANGE_MUSICAS, response.data.tracks);
-        dispatch('changeMsg', '', { root: true });
+        commit(CHANGE_MSG, '', { root: true });
       }
     }, error => {
       if (error.response.status === 401) {
         sessionStorage.setItem('valid', false);
-        dispatch('authAgain', { action: 'Musicas/getList' }, { root: true });
       }
       console.log(error);
     });
@@ -44,18 +43,13 @@ const mutations = {
   },
 };
 
-const getters = {
-  musicas: state => state.musicas,
-};
-
 const state = {
   musicas: [],
 };
 
 export default {
   namespaced: true,
-  state,
   actions,
   mutations,
-  getters,
+  state,
 };

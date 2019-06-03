@@ -42,7 +42,7 @@
 
 <script>
 import isEqual from 'lodash/isEqual';
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Musicas',
@@ -56,10 +56,10 @@ export default {
     musicFavs: [],
   }),
   computed: {
-    ...mapGetters('Musicas', {
+    ...mapState('Musicas', {
       dados: 'musicas',
     }),
-    ...mapGetters(['msg', 'searched']),
+    ...mapState(['msg', 'searched']),
     myData() {
       return (this.searched.length === 0) ? this.dados : this.searched;
     },
@@ -77,8 +77,8 @@ export default {
     this.getMyFavMusics();
   },
   methods: {
-    ...mapActions({
-      getMusicas: 'Musicas/getList',
+    ...mapActions('Musicas', {
+      getMusicas: 'getList',
     }),
     getMyFavMusics() {
       const mf = localStorage.getItem('vueSpotifyFavorites');

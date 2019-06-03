@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Albums',
@@ -82,10 +82,10 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('Albums', {
+    ...mapState('Albums', {
       dados: 'albums',
     }),
-    ...mapGetters(['msg', 'searched']),
+    ...mapState(['msg', 'searched']),
     myData() {
       return (this.searched.length === 0) ? this.dados : this.searched;
     },
@@ -94,8 +94,8 @@ export default {
     if (!this.favoritos) this.getAlbums();
   },
   methods: {
-    ...mapActions({
-      getAlbums: 'Albums/getList',
+    ...mapActions('Albums', {
+      getAlbums: 'getList',
     }),
     enter(artista, album) {
       this.$router.push({ path: `/artista/${artista}/album/${album}` });

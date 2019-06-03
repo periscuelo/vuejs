@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'MusicaListagem',
@@ -97,10 +97,10 @@ export default {
     musicFavs: [],
   }),
   computed: {
-    ...mapGetters('Albums', {
+    ...mapState('Albums', {
       dados: 'album',
     }),
-    ...mapGetters(['msg']),
+    ...mapState(['msg']),
   },
   watch: {
     albumsFav(newValues) {

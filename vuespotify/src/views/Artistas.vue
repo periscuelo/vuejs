@@ -13,7 +13,7 @@
         </vs-alert>
       </vs-col>
     </vs-row>
-    <span v-else>
+    <template v-else>
       <vs-row
         v-for="(grupos, index) in myData"
         :key="index">
@@ -30,6 +30,13 @@
             v-if="dado"
             class="avatar"
             @click="enter(dado.id)">
+            <div class="middle">
+              <vs-button
+                radius
+                color="dark"
+                type="filled"
+                icon="play_arrow"/>
+            </div>
             <vs-avatar
               v-if="dado.images && dado.images[2]"
               :src="dado.images[2].url"
@@ -59,9 +66,9 @@
                   position="right">
                   {{ dado.genres[0] }}
                 </vs-tooltip>
-                <span v-else>
+                <template v-else>
                   N/A
-                </span>
+                </template>
               </vs-col>
             </vs-row>
             <vs-row>
@@ -76,17 +83,11 @@
 
               </vs-col>
             </vs-row>
-            <div class="middle">
-              <vs-button
-                radius
-                color="dark"
-                type="filled"
-                icon="play_arrow"/>
-            </div>
+
           </div>
         </vs-col>
       </vs-row>
-    </span>
+    </template>
   </div>
 </template>
 
@@ -140,12 +141,13 @@ export default {
     transition: .5s ease;
     opacity: 0;
     position: absolute;
-    width: 0;
-    top: 33%;
-    left: 42%;
+    top: 50%;
+    left: 50%;
+    margin:-34px 0 0;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     text-align: center;
+    z-index: 9;
   }
   .play-button {
     border-radius: 50%;

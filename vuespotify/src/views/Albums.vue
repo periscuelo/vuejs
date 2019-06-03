@@ -13,7 +13,7 @@
         </vs-alert>
       </vs-col>
     </vs-row>
-    <span v-else>
+    <template v-else>
       <vs-row
         v-for="(grupos, index) in myData"
         :key="index">
@@ -66,7 +66,7 @@
           </vs-card>
         </vs-col>
       </vs-row>
-    </span>
+    </template>
   </div>
 </template>
 
@@ -119,9 +119,8 @@ export default {
     transition: .5s ease;
     opacity: 0;
     position: absolute;
-    width: 0;
     top: 50%;
-    left: 42%;
+    left: 50%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     text-align: center;

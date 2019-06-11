@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: 'https://periscuelo.github.io/vuejs/tictactoe/'
-}
+  publicPath: process.env.VUE_APP_PATH,
+};

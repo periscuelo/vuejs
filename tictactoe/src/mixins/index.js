@@ -2,19 +2,19 @@ const utils = {
   methods: {
     gameStatus() {
       for (let i = 0; i < 3; i += 1) {
-        if (this.verificaHorizontal(this.game.squares, i, this.game.timePlayer)
-            || this.verificaVertical(this.game.squares, i, this.game.timePlayer)) {
-          this.game.status = 'over';
-          this.game.msg = `Jogador ${this.game.timePlayer} venceu!`;
+        if (this.verificaHorizontal(this.squares, i, this.timePlayer)
+            || this.verificaVertical(this.squares, i, this.timePlayer)) {
+          this.status = 'over';
+          this.msg = `Jogador ${this.timePlayer} venceu!`;
         }
       }
-      if (this.verificaDiagonal(this.game.squares, this.game.timePlayer)) {
-        this.game.status = 'over';
-        this.game.msg = `Jogador ${this.game.timePlayer} venceu!`;
+      if (this.verificaDiagonal(this.squares, this.timePlayer)) {
+        this.status = 'over';
+        this.msg = `Jogador ${this.timePlayer} venceu!`;
       }
-      if (this.verificaPreenchimento(this.game.squares) && this.game.msg === '') {
-        this.game.status = 'over';
-        this.game.msg = 'Deu velha :(';
+      if (this.verificaPreenchimento(this.squares) && this.msg === '') {
+        this.status = 'over';
+        this.msg = 'Deu velha :(';
       }
     },
     verificaHorizontal(arr, index, value) {

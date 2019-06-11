@@ -2,7 +2,7 @@
   <div class="vue-container">
     <h1>Jogo da Velha</h1>
     <div class="container">
-      <div v-for="(lines, line, index) in game.squares"
+      <div v-for="(lines, line, index) in squares"
         :key="index"
         class="row">
         <div class="col-4"
@@ -14,16 +14,16 @@
           <span v-else>&nbsp;</span>
         </div>
       </div>
-      <div class="row text-uppercase smFont" v-if="game.status === 'over'">
+      <div class="row text-uppercase smFont" v-if="status === 'over'">
         <span class="col-12">
-          game {{game.status}} <br> {{game.msg}}
+          game {{status}} <br> {{msg}}
         </span>
         <span class="col-12">
           <button type="button" class="btn btn-primary" @click="reset()">Revanche?</button>
         </span>
       </div>
-      <div class="row" v-if="game.status !== 'over'">
-        <span class="col-12">Jogador {{game.timePlayer}}</span>
+      <div class="row" v-if="status !== 'over'">
+        <span class="col-12">Jogador {{timePlayer}}</span>
       </div>
     </div>
   </div>
@@ -33,45 +33,38 @@
 export default {
   name: 'board',
   data: () => ({
-    game: {
-      timePlayer: 1,
-      status: 'start',
-      squares: [],
-      msg: '',
-    },
+    timePlayer: 1,
+    status: 'start',
+    squares: [],
+    msg: '',
   }),
   created() {
     this.start();
   },
   methods: {
     changePlayer() {
-      this.game.timePlayer = (this.game.timePlayer === 1) ? 2 : 1;
+      this.timePlayer = (this.timePlayer === 1) ? 2 : 1;
     },
     play(line, square) {
-      if (this.game.squares[line][square] === 0) {
-        this.game.squares[line][square] = this.game.timePlayer;
+      if (this.squares[line][square] === 0) {
+        this.squares[line][square] = this.timePlayer;
       }
       this.gameStatus();
     },
     register(line, square, value) {
-      if (value === 0 && this.game.status !== 'over') {
+      if (value === 0 && this.status !== 'over') {
         this.play(line, square);
-        if (this.game.status !== 'over') this.changePlayer();
+        if (this.status !== 'over') this.changePlayer();
       }
     },
     reset() {
-      this.game = {
-        timePlayer: 1,
-        status: 'start',
-        squares: [],
-        msg: '',
-      };
+      Object.assign(this.$data, this.$options.data());
       this.start();
     },
     start() {
-      if (this.game.squares.length === 0) {
+      if (this.squares.length === 0) {
         for (let i = 3; i > 0; i -= 1) {
-          this.game.squares.push([0, 0, 0]);
+          this.squares.push([0, 0, 0]);
         }
       }
     },

@@ -93,7 +93,7 @@ Vue.component('contador', {
           self.stopCount();
           self.interval = setInterval(function() {
             self.chronometer();
-          }, 9);
+          }, 5);
           break;
         case '2':
           if (this.mhour > 0 || this.mminute > 0 || this.msecond > 0) {

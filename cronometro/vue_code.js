@@ -131,7 +131,7 @@ Vue.component('contador', {
       store.commit('mark', { m: this.minute, s: this.second, ms: this.milisecond });
     },
     chronometer: function() {
-      this.milisecond += 10;
+      this.milisecond += 2;
       if (this.milisecond === 100) {
         this.milisecond = 0; 
         this.second += 1;
